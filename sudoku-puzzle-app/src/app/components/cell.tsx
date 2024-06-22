@@ -1,5 +1,6 @@
 import React from "react"
 import "../css/sudoku_board.css"
+import "../css/sudoku_keyboard.css"
 
 export const Cell: React.FunctionComponent<{
     sudokuData: number[][],
@@ -37,7 +38,11 @@ export const Cell: React.FunctionComponent<{
                 ${shouldShowRightBorder? "cell-container-right-border" : ""}`}
         >
             {
-                !!value ? <p className="cell-item">{value}</p> : null
+                !!value ? (
+                    <div key={colIndex} className="numberic">
+                        <div className={`keyboard-svg key-${value}`} />
+                    </div>
+                ) : null
             }
         </div>
     )
