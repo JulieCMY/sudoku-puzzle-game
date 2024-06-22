@@ -31,12 +31,12 @@
     border-right-color: #605e5e;
 }
 
-.cell-container-default {
-    background: rgba(142, 142, 142, 0.3);
+.prefilled {
+    background: #e6e6e6;
 }
 
-.cell-container-pressed {
-    background: rgba(239, 221, 106, 0.3);
+.selected {
+    background: #ffda00;
 }
 
 .cell-item {
@@ -51,4 +51,8 @@
   font-size: 24px;
   border: none;
   outline: none;
+}
+
+.empty {
+  cursor: pointer;
 }

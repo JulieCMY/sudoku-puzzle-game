@@ -2,7 +2,8 @@
     margin: 20px auto;
     display: flex;
     align-items: stretch;
-    justify-content: center
+    justify-content: center;
+    margin-bottom: 100px;
 }
 
 .control {

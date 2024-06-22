@@ -18,12 +18,12 @@ export const Cell: React.FunctionComponent<{
     onPress
 }) => {
     const initialCellValue = sudokuData[rowIndex][colIndex]
-    const isInitialCellDefault = !!initialCellValue
+    const isCellPrefilled = !!initialCellValue
     const isCellSelected = selectedCellIndex === rowIndex * 9 + colIndex
     const shouldShowBottomBorder = ((rowIndex + 1) % 3 === 0 && rowIndex !== 8)
     const shouldShowRightBorder = ((colIndex + 1) % 3 === 0 && colIndex !== 8)
     const onCellClick = () => {
-        if (!isInitialCellDefault) {
+        if (!isCellPrefilled) {
             onPress(rowIndex, colIndex)
         }
     }
@@ -32,8 +32,8 @@ export const Cell: React.FunctionComponent<{
             key={colIndex}
             onClick={onCellClick}
             className={`cell-container 
-                ${isInitialCellDefault ? "cell-container-default" : ""}
-                ${isCellSelected ? "cell-container-pressed" : ""}
+                ${isCellPrefilled ? "prefilled" : ""}
+                ${isCellSelected ? "selected" : ""}
                 ${shouldShowBottomBorder ? "cell-container-bottom-border" :""} 
                 ${shouldShowRightBorder? "cell-container-right-border" : ""}`}
         >
@@ -42,7 +42,9 @@ export const Cell: React.FunctionComponent<{
                     <div key={colIndex} className="numberic">
                         <div className={`keyboard-svg key-${value}`} />
                     </div>
-                ) : null
+                ) : (
+                    <div key={colIndex} className="empty"></div>
+                )
             }
         </div>
     )
