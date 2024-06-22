@@ -1,5 +1,5 @@
 import React from "react"
-import "../css/sudoku_keyboard.css"
+import "../css/keyboard.css"
 
 export const Keyboard: React.FunctionComponent = () => {
     const keyboardInput: number[][] = [

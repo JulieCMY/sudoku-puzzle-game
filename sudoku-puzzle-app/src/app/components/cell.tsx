@@ -1,6 +1,7 @@
 import React from "react"
-import "../css/sudoku_board.css"
-import "../css/sudoku_keyboard.css"
+import "../css/board.css"
+import "../css/keyboard.css"
+import { Candidate } from "./candidate"
 
 export const Cell: React.FunctionComponent<{
     sudokuData: number[][],
@@ -43,7 +44,13 @@ export const Cell: React.FunctionComponent<{
                         <div className={`keyboard-svg key-${value}`} />
                     </div>
                 ) : (
-                    <div key={colIndex} className="empty"></div>
+                    <div key={colIndex}>
+                        {
+                            isCellSelected && (
+                                <Candidate />
+                            )
+                        }
+                    </div>
                 )
             }
         </div>

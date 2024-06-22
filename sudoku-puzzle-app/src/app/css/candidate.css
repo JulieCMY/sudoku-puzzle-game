@@ -1,0 +1,41 @@
+.candidate {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: auto;
+    width: 81px;
+    height: 81px;
+    justify-content: space-between;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.candidate-button {
+    width: 27px;
+    height: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 400ms ease;
+    transition-delay: 50ms;   
+}
+
+.candidate-button:hover {
+    opacity: 0.5;
+}
+
+.candidate-svg {
+    opacity: 0.5;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+}

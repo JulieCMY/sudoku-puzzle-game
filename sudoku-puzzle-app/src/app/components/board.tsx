@@ -1,5 +1,5 @@
 import React from "react"
-import "../css/sudoku_board.css"
+import "../css/board.css"
 import { Cell } from "./cell"
 
 export const Board: React.FunctionComponent = () => {
@@ -18,9 +18,7 @@ export const Board: React.FunctionComponent = () => {
     const [selectedCellIndex, setSelectedCellIndex] = React.useState<number | null>(null)
     const onCellClick = (rowIndex: number, colIndex: number): void => {
         const selectedIndex = rowIndex * 9 + colIndex
-        if (selectedCellIndex === selectedIndex) {
-            setSelectedCellIndex(null)
-        } else {
+        if (selectedCellIndex !== selectedIndex) {
             setSelectedCellIndex(selectedIndex)
         }
     }
