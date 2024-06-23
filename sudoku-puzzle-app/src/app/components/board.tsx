@@ -4,24 +4,15 @@ import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
 import { getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
 import { SudokuState } from "../models/sudoku"
+import { mockData } from "../data/mockData"
 
 export const Board: React.FunctionComponent = () => {
     const dispatch = useDispatch()
-    const data: number[][] = [
-        [0, 0, 8, 1, 9, 5, 6, 4, 0],
-        [6, 5, 1, 0, 4, 0, 0, 8, 0],
-        [2, 0, 0, 0, 0, 8, 0, 7, 1],
-        [0, 0, 0, 7, 2, 9, 8, 0, 0],
-        [0, 4, 0, 0, 5, 0, 0, 0, 3],
-        [0, 6, 0, 0, 0, 0, 9, 5, 0],
-        [7, 3, 5, 9, 0, 1, 0, 0, 0],
-        [1, 2, 6, 4, 0, 0, 0, 0, 5],
-        [0, 0, 0, 5, 0, 0, 1, 0, 6]
-    ]
+    const { sudokuId: id, sudokuData: data} = mockData[0]
 
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
     const playerStats = useSelector((state: SudokuState) => state.playerStats)
-    const currentSudokuPlayerStats = playerStats[1] ?? {}
+    const currentSudokuPlayerStats = playerStats[id] ?? {}
     const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats)
 
     const onCellClick = (rowIndex: number, colIndex: number): void => {

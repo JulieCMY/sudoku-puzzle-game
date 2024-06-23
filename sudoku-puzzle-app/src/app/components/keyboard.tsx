@@ -1,9 +1,11 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 import { selectSudokuKeyboard } from "../action/sudoku"
+import { mockData } from "../data/mockData"
 
 export const Keyboard: React.FunctionComponent = () => {
     const dispatch = useDispatch()
+    const { sudokuId } = mockData[0]
     const keyboardInput: number[][] = [
         [1, 2, 3],
         [4, 5, 6],
@@ -20,7 +22,7 @@ export const Keyboard: React.FunctionComponent = () => {
                     {
                         row.map((cell: number, colIndex: number) => (
                             <div key={colIndex} className="button numberic">
-                                <div className={`keyboard-svg key-${cell}`} onClick={(): void => {onNumericButtonClick(1, cell)}} />
+                                <div className={`keyboard-svg key-${cell}`} onClick={(): void => {onNumericButtonClick(sudokuId, cell)}} />
                             </div>
                         ))
                     }
