@@ -1,9 +1,10 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { Candidate } from "./candidate"
+import { SudokuState } from "../reducer/sudoku"
+import { getSudokuCellIndex } from "../logic/sudoku"
 import "../css/board.css"
 import "../css/keyboard.css"
-import { SudokuState } from "../reducer/sudoku"
 
 export const Cell: React.FunctionComponent<{
     sudokuData: number[][],
@@ -21,7 +22,7 @@ export const Cell: React.FunctionComponent<{
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
     const initialCellValue = sudokuData[rowIndex][colIndex]
     const isCellPrefilled = !!initialCellValue
-    const isCellSelected = selectedCellIndex === rowIndex * 9 + colIndex
+    const isCellSelected = selectedCellIndex === getSudokuCellIndex(rowIndex, colIndex)
     const shouldShowBottomBorder = ((rowIndex + 1) % 3 === 0 && rowIndex !== 8)
     const shouldShowRightBorder = ((colIndex + 1) % 3 === 0 && colIndex !== 8)
     const onCellClick = () => {

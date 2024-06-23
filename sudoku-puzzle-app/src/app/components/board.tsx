@@ -4,6 +4,7 @@ import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
 import "../css/board.css"
 import { SudokuState } from "../reducer/sudoku"
+import { getSudokuCellIndex } from "../logic/sudoku"
 
 export const Board: React.FunctionComponent = () => {
     const dispatch = useDispatch()
@@ -20,9 +21,8 @@ export const Board: React.FunctionComponent = () => {
     ]
 
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
-    console.log(`selectedCellIndex: ${selectedCellIndex}`)
     const onCellClick = (rowIndex: number, colIndex: number): void => {
-        const selectedIndex = rowIndex * 9 + colIndex
+        const selectedIndex = getSudokuCellIndex(rowIndex, colIndex)
         if (selectedCellIndex !== selectedIndex) {
             dispatch(selectSudokuCell(selectedIndex))
         }
@@ -34,7 +34,7 @@ export const Board: React.FunctionComponent = () => {
                 <div key={rowIndex} className="row">
                     {row.map((cell: number, colIndex: number) => (
                         <Cell 
-                            key={rowIndex * 9 + colIndex}
+                            key={getSudokuCellIndex(rowIndex, colIndex)}
                             sudokuData={data}
                             value={cell}
                             rowIndex={rowIndex}
