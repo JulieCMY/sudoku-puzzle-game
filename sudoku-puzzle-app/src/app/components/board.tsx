@@ -1,8 +1,12 @@
 import React from "react"
-import "../css/board.css"
+import { useSelector, useDispatch } from "react-redux"
+import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
+import "../css/board.css"
+import { SudokuState } from "../reducer/sudoku"
 
 export const Board: React.FunctionComponent = () => {
+    const dispatch = useDispatch()
     const data: number[][] = [
         [0, 0, 8, 1, 9, 5, 6, 4, 0],
         [6, 5, 1, 0, 4, 0, 0, 8, 0],
@@ -15,11 +19,12 @@ export const Board: React.FunctionComponent = () => {
         [0, 0, 0, 5, 0, 0, 1, 0, 6]
     ]
 
-    const [selectedCellIndex, setSelectedCellIndex] = React.useState<number | null>(null)
+    const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
+    console.log(`selectedCellIndex: ${selectedCellIndex}`)
     const onCellClick = (rowIndex: number, colIndex: number): void => {
         const selectedIndex = rowIndex * 9 + colIndex
         if (selectedCellIndex !== selectedIndex) {
-            setSelectedCellIndex(selectedIndex)
+            dispatch(selectSudokuCell(selectedIndex))
         }
     }
 
@@ -32,7 +37,6 @@ export const Board: React.FunctionComponent = () => {
                             key={rowIndex * 9 + colIndex}
                             sudokuData={data}
                             value={cell}
-                            selectedCellIndex={selectedCellIndex}
                             rowIndex={rowIndex}
                             colIndex={colIndex}
                             onPress={onCellClick}
