@@ -10,15 +10,15 @@ const candidateInput: number[][] = [
     [7, 8, 9]
 ]
 
-export const Candidate: React.FunctionComponent<{sudokuId: number}> = ({sudokuId}) => {
+export const Candidate: React.FunctionComponent<{sudokuId: number, cellIndex: number}> = ({sudokuId, cellIndex}) => {
     const dispatch = useDispatch()
-    const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
     const candidateStats = useSelector((state: SudokuState) => state.candidateStats)
     const candidateData = candidateStats[sudokuId] ?? {}
-    const candidateList = !!selectedCellIndex ? candidateData[selectedCellIndex] : []
+    const candidateList = !!cellIndex ? candidateData[cellIndex] : []
+    console.log(`candidateData: ${JSON.stringify(candidateData)}`)
 
-    const onCandidateButtonClick = (id: number, value: number): void => {
-        dispatch(selectSudokuCandidate(id, value))
+    const onCandidateButtonClick = (id: number, value: number, index: number): void => {
+        dispatch(selectSudokuCandidate(id, value, index))
     }
 
     return (
@@ -27,13 +27,13 @@ export const Candidate: React.FunctionComponent<{sudokuId: number}> = ({sudokuId
                 <div key={rowIndex} className="row">
                     {
                         row.map((cell: number, colIndex: number) => {
-                            const isCandidateSeletced = candidateList.includes(cell)
+                            const isCandidateSeletced = candidateList?.includes(cell)
                             return (
                                 (
                                     <div 
                                         key={colIndex} className={`candidate-button ${isCandidateSeletced ? "candidate-button-selected" : ""}`}
                                         onClick={(): void => {
-                                            onCandidateButtonClick(sudokuId,cell)
+                                            onCandidateButtonClick(sudokuId,cell,cellIndex)
                                         }}
                                     >
                                         <Icon value={cell}/>

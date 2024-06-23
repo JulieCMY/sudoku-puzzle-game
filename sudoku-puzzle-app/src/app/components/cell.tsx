@@ -50,13 +50,10 @@ export const Cell: React.FunctionComponent<{
                     </div>
                 ) : (
                     <div key={colIndex}>
-                        {
-                            isCellSelected && (
-                                <Candidate 
-                                    sudokuId={sudokuId}
-                                />
-                            )
-                        }
+                        <Candidate 
+                            sudokuId={sudokuId}
+                            cellIndex={getSudokuCellIndex(rowIndex, colIndex)}
+                        />
                     </div>
                 )
             }

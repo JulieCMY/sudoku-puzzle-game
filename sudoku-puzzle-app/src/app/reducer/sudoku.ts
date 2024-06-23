@@ -46,14 +46,12 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
             return state
         }
         case "SELECT_SUDOKU_CANDIDATE": {
-            const selectedCellIndex = state.selectedCellIndex
-            if (!!selectedCellIndex) {
-                const userData = state.candidateStats[action.id] ?? {}
-                const candidateList = userData[selectedCellIndex] ?? []
+            const userData = state.candidateStats[action.id] ?? {}
+                const candidateList = userData[action.index] ?? []
                 if (candidateList.includes(action.value)) {
-                    userData[selectedCellIndex] = [...candidateList.filter(value => value !== action.value)]
+                    userData[action.index] = [...candidateList.filter(value => value !== action.value)]
                 } else {
-                    userData[selectedCellIndex] = [...candidateList, action.value].sort()
+                    userData[action.index] = [...candidateList, action.value].sort()
                 }
                 return {
                     ...state,
@@ -62,7 +60,6 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
                         [action.id]: userData
                     }
                 }
-            }
             return state
         }
         default:

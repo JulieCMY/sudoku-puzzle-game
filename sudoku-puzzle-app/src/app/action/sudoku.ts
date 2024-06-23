@@ -26,10 +26,11 @@ export const deleteSudokuInput = (id: number) => {
     } as const
 };
 
-export const selectSudokuCandidate = (id: number, value: number) => {
+export const selectSudokuCandidate = (id: number, value: number, index: number) => {
     return {
         type: "SELECT_SUDOKU_CANDIDATE",
         id,
         value,
+        index
     } as const
 };
