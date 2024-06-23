@@ -33,7 +33,7 @@ export const Candidate: React.FunctionComponent<{sudokuId: number, cellIndex: nu
                                 (
                                     <div 
                                         key={colIndex} 
-                                        className={`candidate-button ${isCellSelected ? "candidate-button-hoverable" : ""} ${isCandidateSeletced ? "candidate-button-selected" : ""}`}
+                                        className={`candidate-button ${isCellSelected ? "candidate-button-hoverable" : ""} ${isCandidateSeletced && isCellSelected ? "candidate-button-selected-highlight" : ""} ${isCandidateSeletced && !isCellSelected ? "candidate-button-selected" : ""}`}
                                         onClick={(): void => {
                                             onCandidateButtonClick(sudokuId,cell,cellIndex)
                                         }}
