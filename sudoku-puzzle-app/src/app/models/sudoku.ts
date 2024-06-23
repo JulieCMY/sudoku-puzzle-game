@@ -1,4 +1,4 @@
-interface ObjectCollection<T>{
+export interface ObjectCollection<T>{
     [objectKey: string]: T | undefined
 }
 

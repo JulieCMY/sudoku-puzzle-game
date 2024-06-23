@@ -2,7 +2,7 @@ import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
-import { getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
+import { findDuplicateCellIndex, getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
 import { SudokuState } from "../models/sudoku"
 import { mockData } from "../data/mockData"
 
@@ -14,6 +14,7 @@ export const Board: React.FunctionComponent = () => {
     const playerStats = useSelector((state: SudokuState) => state.playerStats)
     const currentSudokuPlayerStats = playerStats[id] ?? {}
     const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats)
+    const duplicatedCellIndexList = findDuplicateCellIndex(playerData)
 
     const onCellClick = (rowIndex: number, colIndex: number): void => {
         const selectedIndex = getSudokuCellIndex(rowIndex, colIndex)
@@ -30,6 +31,7 @@ export const Board: React.FunctionComponent = () => {
                         <Cell 
                             key={getSudokuCellIndex(rowIndex, colIndex)}
                             sudokuData={data}
+                            isConflict={duplicatedCellIndexList.includes(getSudokuCellIndex(rowIndex, colIndex))}
                             value={cell}
                             rowIndex={rowIndex}
                             colIndex={colIndex}

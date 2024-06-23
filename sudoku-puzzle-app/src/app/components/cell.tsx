@@ -9,12 +9,14 @@ export const Cell: React.FunctionComponent<{
     value: number,
     rowIndex: number,
     colIndex: number,
+    isConflict: boolean,
     onPress: (rowIndex: number, colIndex: number) => void
 }> = ({
     sudokuData,
     value,
     rowIndex,
     colIndex,
+    isConflict,
     onPress
 }) => {
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
@@ -40,8 +42,9 @@ export const Cell: React.FunctionComponent<{
         >
             {
                 !!value ? (
-                    <div key={colIndex} className="numberic">
+                    <div key={colIndex} className="numberic" style={{position: "relative"}}>
                         <div className={`keyboard-svg key-${value}`} />
+                        <div className={`cell-conflict ${isConflict? "conflicted": ""}`}/>
                     </div>
                 ) : (
                     <div key={colIndex}>
