@@ -25,6 +25,10 @@
     transition-delay: 50ms;   
 }
 
+.candidate-button-selected {
+    opacity: 1;
+}
+
 .candidate-button:hover {
     opacity: 0.5;
 }

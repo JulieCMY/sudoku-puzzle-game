@@ -6,6 +6,7 @@ import { getSudokuCellIndex } from "../logic/sudoku"
 
 export const Cell: React.FunctionComponent<{
     sudokuData: number[][],
+    sudokuId: number,
     value: number,
     rowIndex: number,
     colIndex: number,
@@ -13,6 +14,7 @@ export const Cell: React.FunctionComponent<{
     onPress: (rowIndex: number, colIndex: number) => void
 }> = ({
     sudokuData,
+    sudokuId,
     value,
     rowIndex,
     colIndex,
@@ -50,7 +52,9 @@ export const Cell: React.FunctionComponent<{
                     <div key={colIndex}>
                         {
                             isCellSelected && (
-                                <Candidate />
+                                <Candidate 
+                                    sudokuId={sudokuId}
+                                />
                             )
                         }
                     </div>

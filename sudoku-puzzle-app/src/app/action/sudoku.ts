@@ -6,28 +6,30 @@ export type SudokuActions =
 
 export const selectSudokuCell = (index: number) => {
     return {
-        type: 'SELECT_SUDOKU_CELL',
+        type: "SELECT_SUDOKU_CELL",
         index,
-    } as const;
+    } as const
 };
 
 export const selectSudokuKeyboard = (id: number, value: number) => {
     return {
-        type: 'SELECT_SUDOKU_KEYBOARD',
+        type: "SELECT_SUDOKU_KEYBOARD",
         id,
         value,
-    } as const;
+    } as const
 };
 
 export const deleteSudokuInput = (id: number) => {
     return {
-        type: 'DELETE_SUDOKU_INPUT',
+        type: "DELETE_SUDOKU_INPUT",
         id
-    } as const;
+    } as const
 };
 
-export const selectSudokuCandidate = () => {
+export const selectSudokuCandidate = (id: number, value: number) => {
     return {
-        type: 'SELECT_SUDOKU_CANDIDATE',
-    } as const;
+        type: "SELECT_SUDOKU_CANDIDATE",
+        id,
+        value,
+    } as const
 };

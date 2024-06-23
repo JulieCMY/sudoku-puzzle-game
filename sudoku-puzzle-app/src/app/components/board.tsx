@@ -31,6 +31,7 @@ export const Board: React.FunctionComponent = () => {
                         <Cell 
                             key={getSudokuCellIndex(rowIndex, colIndex)}
                             sudokuData={data}
+                            sudokuId={id}
                             isConflict={duplicatedCellIndexList.includes(getSudokuCellIndex(rowIndex, colIndex))}
                             value={cell}
                             rowIndex={rowIndex}
