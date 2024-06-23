@@ -53,6 +53,7 @@ export const Cell: React.FunctionComponent<{
                         <Candidate 
                             sudokuId={sudokuId}
                             cellIndex={getSudokuCellIndex(rowIndex, colIndex)}
+                            isCellSelected={isCellSelected}
                         />
                     </div>
                 )

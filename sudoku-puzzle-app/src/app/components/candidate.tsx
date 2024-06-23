@@ -10,15 +10,16 @@ const candidateInput: number[][] = [
     [7, 8, 9]
 ]
 
-export const Candidate: React.FunctionComponent<{sudokuId: number, cellIndex: number}> = ({sudokuId, cellIndex}) => {
+export const Candidate: React.FunctionComponent<{sudokuId: number, cellIndex: number, isCellSelected: boolean}> = ({sudokuId, cellIndex, isCellSelected}) => {
     const dispatch = useDispatch()
     const candidateStats = useSelector((state: SudokuState) => state.candidateStats)
     const candidateData = candidateStats[sudokuId] ?? {}
     const candidateList = !!cellIndex ? candidateData[cellIndex] : []
-    console.log(`candidateData: ${JSON.stringify(candidateData)}`)
 
     const onCandidateButtonClick = (id: number, value: number, index: number): void => {
-        dispatch(selectSudokuCandidate(id, value, index))
+        if (isCellSelected) {
+            dispatch(selectSudokuCandidate(id, value, index))
+        }
     }
 
     return (
@@ -31,7 +32,8 @@ export const Candidate: React.FunctionComponent<{sudokuId: number, cellIndex: nu
                             return (
                                 (
                                     <div 
-                                        key={colIndex} className={`candidate-button ${isCandidateSeletced ? "candidate-button-selected" : ""}`}
+                                        key={colIndex} 
+                                        className={`candidate-button ${isCellSelected ? "candidate-button-hoverable" : ""} ${isCandidateSeletced ? "candidate-button-selected" : ""}`}
                                         onClick={(): void => {
                                             onCandidateButtonClick(sudokuId,cell,cellIndex)
                                         }}
