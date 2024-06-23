@@ -15,7 +15,7 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
                 ...state,
                 selectedCellIndex: action.index,
             }
-        case "SELECT_SUDOKU_KEYBOARD":
+        case "SELECT_SUDOKU_KEYBOARD": {
             const selectedCellIndex = state.selectedCellIndex
             if (!!selectedCellIndex) {
                 const userData = state.playerStats[action.id] ?? {}
@@ -29,6 +29,22 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
                 }
             }
             return state
+        }
+        case "DELETE_SUDOKU_INPUT": {
+            const selectedCellIndex = state.selectedCellIndex
+            if (!!selectedCellIndex) {
+                const userData = state.playerStats[action.id] ?? {}
+                delete userData[selectedCellIndex]
+                return {
+                    ...state,
+                    playerStats: {
+                        ...state.playerStats,
+                        [action.id]: userData
+                    }
+                }
+            }
+            return state
+        }
         default:
             return state
     }

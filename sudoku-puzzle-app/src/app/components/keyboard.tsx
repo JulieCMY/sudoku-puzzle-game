@@ -1,6 +1,6 @@
 import React from "react"
 import { useDispatch } from "react-redux"
-import { selectSudokuKeyboard } from "../action/sudoku"
+import { selectSudokuKeyboard, deleteSudokuInput } from "../action/sudoku"
 import { mockData } from "../data/mockData"
 
 export const Keyboard: React.FunctionComponent = () => {
@@ -13,6 +13,9 @@ export const Keyboard: React.FunctionComponent = () => {
     ]
     const onNumericButtonClick = (id: number, value: number): void => {
         dispatch(selectSudokuKeyboard(id, value))
+    }
+    const onDeleteButtonClick = (id: number): void => {
+        dispatch(deleteSudokuInput(id))
     }
 
     return (
@@ -28,7 +31,7 @@ export const Keyboard: React.FunctionComponent = () => {
                     }
                 </div>
             ))}
-            <div key="delete" className="button delete" />
+            <div key="delete" className="button delete" onClick={(): void => {onDeleteButtonClick(sudokuId)}} />
         </div>
     )
 }

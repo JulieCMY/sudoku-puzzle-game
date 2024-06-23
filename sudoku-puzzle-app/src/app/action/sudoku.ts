@@ -19,9 +19,10 @@ export const selectSudokuKeyboard = (id: number, value: number) => {
     } as const;
 };
 
-export const deleteSudokuInput = () => {
+export const deleteSudokuInput = (id: number) => {
     return {
         type: 'DELETE_SUDOKU_INPUT',
+        id
     } as const;
 };
 
