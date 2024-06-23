@@ -4,6 +4,8 @@ import { SudokuState } from "../models/sudoku";
 
 const initialState: SudokuState = {
     selectedCellIndex: undefined,
+    playerStats: {},
+    candidateStats: {}
 }
 
 const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState => {
@@ -13,6 +15,20 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
                 ...state,
                 selectedCellIndex: action.index,
             }
+        case "SELECT_SUDOKU_KEYBOARD":
+            const selectedCellIndex = state.selectedCellIndex
+            if (!!selectedCellIndex) {
+                const userData = state.playerStats[action.id] ?? {}
+                userData[selectedCellIndex] = action.value
+                return {
+                    ...state,
+                    playerStats: {
+                        ...state.playerStats,
+                        [action.id]: userData
+                    }
+                }
+            }
+            return state
         default:
             return state
     }

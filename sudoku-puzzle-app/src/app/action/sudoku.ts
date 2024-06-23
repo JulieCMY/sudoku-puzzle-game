@@ -11,9 +11,10 @@ export const selectSudokuCell = (index: number) => {
     } as const;
 };
 
-export const selectSudokuKeyboard = (value: number) => {
+export const selectSudokuKeyboard = (id: number, value: number) => {
     return {
         type: 'SELECT_SUDOKU_KEYBOARD',
+        id,
         value,
     } as const;
 };

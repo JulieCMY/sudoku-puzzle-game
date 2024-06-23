@@ -2,7 +2,7 @@ import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
-import { getSudokuCellIndex } from "../logic/sudoku"
+import { getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
 import { SudokuState } from "../models/sudoku"
 
 export const Board: React.FunctionComponent = () => {
@@ -20,6 +20,10 @@ export const Board: React.FunctionComponent = () => {
     ]
 
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
+    const playerStats = useSelector((state: SudokuState) => state.playerStats)
+    const currentSudokuPlayerStats = playerStats[1] ?? {}
+    const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats)
+
     const onCellClick = (rowIndex: number, colIndex: number): void => {
         const selectedIndex = getSudokuCellIndex(rowIndex, colIndex)
         if (selectedCellIndex !== selectedIndex) {
@@ -29,7 +33,7 @@ export const Board: React.FunctionComponent = () => {
 
     return (
         <div className="board">
-            {data.map((row: number[], rowIndex: number) => (
+            {playerData.map((row: number[], rowIndex: number) => (
                 <div key={rowIndex} className="row">
                     {row.map((cell: number, colIndex: number) => (
                         <Cell 

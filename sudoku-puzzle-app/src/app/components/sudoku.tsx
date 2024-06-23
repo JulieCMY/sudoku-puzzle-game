@@ -15,5 +15,4 @@ export const Sudoku: React.FunctionComponent = () => {
             </div>         
         </div>
     )
-
 }
