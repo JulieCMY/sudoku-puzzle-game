@@ -1,5 +1,4 @@
 import React from "react"
-import "../css/keyboard.css"
 
 export const Keyboard: React.FunctionComponent = () => {
     const keyboardInput: number[][] = [

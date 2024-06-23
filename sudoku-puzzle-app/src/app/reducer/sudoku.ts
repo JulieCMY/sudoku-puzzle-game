@@ -1,10 +1,6 @@
 import { createStore } from "redux";
 import { SudokuActions } from "../action/sudoku";
-
-export interface SudokuState {
-    selectedCellIndex?: number
-
-}
+import { SudokuState } from "../models/sudoku";
 
 const initialState: SudokuState = {
     selectedCellIndex: undefined,

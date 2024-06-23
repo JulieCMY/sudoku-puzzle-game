@@ -1,10 +1,8 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { Candidate } from "./candidate"
-import { SudokuState } from "../reducer/sudoku"
+import { SudokuState } from "../models/sudoku"
 import { getSudokuCellIndex } from "../logic/sudoku"
-import "../css/board.css"
-import "../css/keyboard.css"
 
 export const Cell: React.FunctionComponent<{
     sudokuData: number[][],

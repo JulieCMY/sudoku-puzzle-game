@@ -2,9 +2,8 @@ import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
-import "../css/board.css"
-import { SudokuState } from "../reducer/sudoku"
 import { getSudokuCellIndex } from "../logic/sudoku"
+import { SudokuState } from "../models/sudoku"
 
 export const Board: React.FunctionComponent = () => {
     const dispatch = useDispatch()

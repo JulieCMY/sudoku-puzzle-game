@@ -1,5 +1,4 @@
 import React from "react"
-import "../css/candidate.css"
 import { Icon } from "./icon"
 
 export const Candidate: React.FunctionComponent = () => {
