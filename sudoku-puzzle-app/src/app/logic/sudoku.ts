@@ -69,6 +69,29 @@ export const findDuplicateCellIndex = (playerData: number[][]): number[] => {
         })
     }
 
+    // find duplicates in 3 x 3 set
+    for (let row = 0; row < playerData.length; row = row + 3) {
+        for (let col = 0; col < playerData[0].length; col = col + 3) {
+            const counter: ObjectCollection<number[]> = {}
+            for (let colIndex = col; colIndex < col + 3; colIndex++) {
+                for (let rowIndex = row; rowIndex < row + 3; rowIndex++) {
+                    const cellValue = playerData[rowIndex][colIndex]
+                    if (!!cellValue) {
+                        counter[cellValue] = counter[cellValue] || []
+                        counter[cellValue]?.push(getSudokuCellIndex(rowIndex, colIndex))
+                    }
+                }
+            }
+            Object.keys(counter).map(cellValue => {
+                const cellIndexList = counter[cellValue] ?? []
+                if (cellIndexList.length > 1) {
+                    duplicatesList = [...duplicatesList, ...cellIndexList]
+                }
+            })
+        }
+    }
+
+
     return duplicatesList.filter((value, index, self) => {
         return self.indexOf(value) === index
     })
@@ -80,6 +103,15 @@ export const getAllCandidateList = (cellIndex: number, sudokuData: number[][]): 
     return allCandidateList.filter(candidate => {
         const rowList = sudokuData[rowIndex]
         const colList = sudokuData.map(row => row[colIndex])
-        return !rowList.some(rowValue => rowValue === candidate) && !colList.some(colValue => colValue === candidate)
+        let threeTimesThreeList: number[] = []
+        const rowStartIndex = Math.floor(rowIndex / 3) * 3
+        const colStartIndex = Math.floor(colIndex / 3) * 3
+        for (let row = rowStartIndex; row < rowStartIndex + 3; row ++) {
+            for (let col = colStartIndex; col < colStartIndex + 3; col ++) {
+                threeTimesThreeList = [...threeTimesThreeList, sudokuData[row][col]]
+            }
+        }
+
+        return !rowList.some(rowValue => rowValue === candidate) && !colList.some(colValue => colValue === candidate) && !threeTimesThreeList.some(threeSetValue => threeSetValue === candidate)
     })
 }
