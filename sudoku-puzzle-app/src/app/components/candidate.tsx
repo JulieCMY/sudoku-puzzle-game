@@ -19,9 +19,9 @@ export const Candidate: React.FunctionComponent<{sudokuId: number, sudokuData: n
     const candidateList = !!cellIndex ? candidateData[cellIndex] : []
     const allValidCandidateList = getAllCandidateList(cellIndex, playerData)
 
-    const onCandidateButtonClick = (id: number, value: number, index: number): void => {
+    const onCandidateButtonClick = (id: number, value: number): void => {
         if (isCellSelected && !isAutoCandidateModeOn) {
-            dispatch(selectSudokuCandidate(id, value, index))
+            dispatch(selectSudokuCandidate(id, value))
         }
     }
 
@@ -38,7 +38,7 @@ export const Candidate: React.FunctionComponent<{sudokuId: number, sudokuData: n
                                         key={colIndex} 
                                         className={`candidate-button ${isCellSelected ? "candidate-button-hoverable" : ""} ${isCandidateSeletced && isCellSelected ? "candidate-button-selected-highlight" : ""} ${isCandidateSeletced && !isCellSelected ? "candidate-button-selected" : ""}`}
                                         onClick={(): void => {
-                                            onCandidateButtonClick(sudokuId,cell,cellIndex)
+                                            onCandidateButtonClick(sudokuId,cell)
                                         }}
                                     >
                                         <Icon value={cell}/>
