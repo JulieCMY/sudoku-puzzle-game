@@ -5,7 +5,8 @@ import { SudokuState } from "../models/sudoku";
 const initialState: SudokuState = {
     selectedCellIndex: undefined,
     playerStats: {},
-    candidateStats: {}
+    candidateStats: {},
+    isAutoCandidateModeOn: false
 }
 
 const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState => {
@@ -47,20 +48,25 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
         }
         case "SELECT_SUDOKU_CANDIDATE": {
             const userData = state.candidateStats[action.id] ?? {}
-                const candidateList = userData[action.index] ?? []
-                if (candidateList.includes(action.value)) {
-                    userData[action.index] = [...candidateList.filter(value => value !== action.value)]
-                } else {
-                    userData[action.index] = [...candidateList, action.value].sort()
+            const candidateList = userData[action.index] ?? []
+            if (candidateList.includes(action.value)) {
+                userData[action.index] = [...candidateList.filter(value => value !== action.value)]
+            } else {
+                userData[action.index] = [...candidateList, action.value].sort()
+            }
+            return {
+                ...state,
+                candidateStats: {
+                    ...state.candidateStats,
+                    [action.id]: userData
                 }
-                return {
-                    ...state,
-                    candidateStats: {
-                        ...state.candidateStats,
-                        [action.id]: userData
-                    }
-                }
-            return state
+            }
+        }
+        case "SELECT_CANDIDATE_MODE_CHECKBOX": {
+            return {
+                ...state,
+                isAutoCandidateModeOn: !state.isAutoCandidateModeOn
+            }
         }
         default:
             return state

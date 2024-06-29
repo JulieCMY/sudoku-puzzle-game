@@ -3,6 +3,7 @@ export type SudokuActions =
     | ReturnType<typeof selectSudokuKeyboard>
     | ReturnType<typeof deleteSudokuInput>
     | ReturnType<typeof selectSudokuCandidate>
+    | ReturnType<typeof selectCandidateModeCheckbox>
 
 export const selectSudokuCell = (index: number) => {
     return {
@@ -32,5 +33,11 @@ export const selectSudokuCandidate = (id: number, value: number, index: number) 
         id,
         value,
         index
+    } as const
+};
+
+export const selectCandidateModeCheckbox = () => {
+    return {
+        type: "SELECT_CANDIDATE_MODE_CHECKBOX",
     } as const
 };

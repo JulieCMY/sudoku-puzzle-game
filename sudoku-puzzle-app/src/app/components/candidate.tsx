@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { selectSudokuCandidate } from "../action/sudoku"
 import { Icon } from "./icon"
 import { SudokuState } from "../models/sudoku"
+import { getAllCandidateList } from "../logic/sudoku"
 
 const candidateInput: number[][] = [
     [1, 2, 3],
@@ -10,14 +11,16 @@ const candidateInput: number[][] = [
     [7, 8, 9]
 ]
 
-export const Candidate: React.FunctionComponent<{sudokuId: number, cellIndex: number, isCellSelected: boolean}> = ({sudokuId, cellIndex, isCellSelected}) => {
+export const Candidate: React.FunctionComponent<{sudokuId: number, sudokuData: number[][], playerData: number[][], cellIndex: number, isCellSelected: boolean}> = ({sudokuId, sudokuData, playerData, cellIndex, isCellSelected}) => {
     const dispatch = useDispatch()
+    const isAutoCandidateModeOn = useSelector((state: SudokuState) => state.isAutoCandidateModeOn)
     const candidateStats = useSelector((state: SudokuState) => state.candidateStats)
     const candidateData = candidateStats[sudokuId] ?? {}
     const candidateList = !!cellIndex ? candidateData[cellIndex] : []
+    const allValidCandidateList = getAllCandidateList(cellIndex, playerData)
 
     const onCandidateButtonClick = (id: number, value: number, index: number): void => {
-        if (isCellSelected) {
+        if (isCellSelected && !isAutoCandidateModeOn) {
             dispatch(selectSudokuCandidate(id, value, index))
         }
     }
@@ -28,7 +31,7 @@ export const Candidate: React.FunctionComponent<{sudokuId: number, cellIndex: nu
                 <div key={rowIndex} className="row">
                     {
                         row.map((cell: number, colIndex: number) => {
-                            const isCandidateSeletced = candidateList?.includes(cell)
+                            const isCandidateSeletced = isAutoCandidateModeOn ? allValidCandidateList.includes(cell) : candidateList?.includes(cell)
                             return (
                                 (
                                     <div 

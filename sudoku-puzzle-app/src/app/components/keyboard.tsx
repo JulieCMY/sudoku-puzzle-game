@@ -1,10 +1,13 @@
 import React from "react"
-import { useDispatch } from "react-redux"
-import { selectSudokuKeyboard, deleteSudokuInput } from "../action/sudoku"
+import { useSelector, useDispatch } from "react-redux"
+import { selectSudokuKeyboard, deleteSudokuInput, selectCandidateModeCheckbox } from "../action/sudoku"
 import { mockData } from "../data/mockData"
+import { text } from "../text/text"
+import { SudokuState } from "../models/sudoku"
 
 export const Keyboard: React.FunctionComponent = () => {
     const dispatch = useDispatch()
+    const isAutoCandidateModeOn = useSelector((state: SudokuState) => state.isAutoCandidateModeOn)
     const { sudokuId } = mockData[0]
     const keyboardInput: number[][] = [
         [1, 2, 3],
@@ -16,6 +19,9 @@ export const Keyboard: React.FunctionComponent = () => {
     }
     const onDeleteButtonClick = (id: number): void => {
         dispatch(deleteSudokuInput(id))
+    }
+    const onAutoCandidateModeCheckboxClick = (): void => {
+        dispatch(selectCandidateModeCheckbox())
     }
 
     return (
@@ -32,6 +38,10 @@ export const Keyboard: React.FunctionComponent = () => {
                 </div>
             ))}
             <div key="delete" className="button delete" onClick={(): void => {onDeleteButtonClick(sudokuId)}} />
+            <div className="keyboard-auto" onClick={onAutoCandidateModeCheckboxClick}>
+                <input type="checkbox" checked={isAutoCandidateModeOn} className="keyboard-checkbox" />
+                <div>{text.autoCandidateMode}</div>
+            </div>
         </div>
     )
 }

@@ -73,3 +73,13 @@ export const findDuplicateCellIndex = (playerData: number[][]): number[] => {
         return self.indexOf(value) === index
     })
 }
+
+export const getAllCandidateList = (cellIndex: number, sudokuData: number[][]): number[] => {
+    const { rowIndex, colIndex } = getSudokuRowColIndex(cellIndex)
+    const allCandidateList = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    return allCandidateList.filter(candidate => {
+        const rowList = sudokuData[rowIndex]
+        const colList = sudokuData.map(row => row[colIndex])
+        return !rowList.some(rowValue => rowValue === candidate) && !colList.some(colValue => colValue === candidate)
+    })
+}
