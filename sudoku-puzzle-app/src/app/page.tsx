@@ -1,6 +1,7 @@
 "use client";
 
 import { Sudoku } from "./components/sudoku";
+import { ToolBar } from "./components/toolbar";
 
 export default function Home() {
   return (
@@ -25,6 +26,8 @@ export default function Home() {
           </a>
         </div>
       </div>
+
+      <ToolBar />
 
       <Sudoku />
 

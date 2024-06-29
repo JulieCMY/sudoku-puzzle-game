@@ -13,6 +13,7 @@ const data: number[][] = [
 export const mockData = [
     {
         sudokuId: 1,
-        sudokuData: data
+        sudokuData: data,
+        level: 1
     }
 ]
