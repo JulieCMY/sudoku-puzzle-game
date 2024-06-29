@@ -18,7 +18,7 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
             }
         case "SELECT_SUDOKU_KEYBOARD": {
             const selectedCellIndex = state.selectedCellIndex
-            if (!!selectedCellIndex) {
+            if (selectedCellIndex !== undefined) {
                 const userData = state.playerStats[action.id] ?? {}
                 userData[selectedCellIndex] = action.value
                 return {
@@ -33,14 +33,28 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
         }
         case "DELETE_SUDOKU_INPUT": {
             const selectedCellIndex = state.selectedCellIndex
-            if (!!selectedCellIndex) {
-                const userData = state.playerStats[action.id] ?? {}
-                delete userData[selectedCellIndex]
-                return {
-                    ...state,
-                    playerStats: {
-                        ...state.playerStats,
-                        [action.id]: userData
+            if (selectedCellIndex !== undefined) {
+                const playerData = state.playerStats[action.id] ?? {}
+                const sudokuInput = playerData[selectedCellIndex]
+                const candidateData = state.candidateStats[action.id] ?? {}
+                const candidateList = candidateData[selectedCellIndex] ?? []
+                if (sudokuInput) {
+                    delete playerData[selectedCellIndex]
+                    return {
+                        ...state,
+                        playerStats: {
+                            ...state.playerStats,
+                            [action.id]: playerData
+                        }
+                    }
+                } else if (candidateList.length > 0) {
+                    delete candidateData[selectedCellIndex]
+                    return {
+                        ...state,
+                        candidateStats: {
+                            ...state.candidateStats,
+                            [action.id]: candidateData
+                        }
                     }
                 }
             }
