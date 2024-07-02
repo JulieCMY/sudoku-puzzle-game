@@ -15,8 +15,8 @@
 }
 
 .candidate-button {
-    width: 1.6875rem; 
-    height: 1.6875rem;
+    width: 33%; 
+    height: 33%;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -185,3 +185,9 @@
 .pz-dropdown-menu-item:hover {
     background-color: #e6e6e6;
 }
+
+@media (max-width: 550px) {
+    .su-level {
+        display: none;
+    }
+}

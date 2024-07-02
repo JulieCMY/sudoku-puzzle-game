@@ -48,7 +48,7 @@ export const Cell: React.FunctionComponent<{
         >
             {
                 !shouldShowCandidate ? (
-                    <div key={colIndex} className="numberic" style={{position: "relative"}}>
+                    <div key={colIndex} className="numeric" style={{position: "relative"}}>
                         <div className={`keyboard-svg key-${value}`} />
                         <div className={`cell-conflict ${isConflict? "conflicted": ""}`}/>
                     </div>

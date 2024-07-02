@@ -35,19 +35,14 @@
     border: none;
 }
 
-.row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .button {
     background: rgba(142, 142, 142, 0.3);
     border: 0.0625rem solid #959595;
     border-radius: 0.25rem;
+    margin-top: 0.875rem;
 }
 
-.numberic {
+.numeric {
     width: 4.375rem;
     height: 4.375rem;
     display: flex;
@@ -121,6 +116,12 @@
     background-position: center;
 }
 
+.key-delete {
+    background-repeat: no-repeat;
+    background-image: url(../images/delete.svg);
+    background-position: center;
+}
+
 .key-candidate {
     height: 33.3333333333%;
     width: 33.3333333333%;
@@ -128,12 +129,9 @@
     transform: scale(1.2);
 }
 
-.delete {
+.key-delete-container {
     width: 100%;
     height: 3rem;
-    background-repeat: no-repeat;
-    background-image: url(../images/delete.svg);
-    background-position: center;
 }
 
 .keyboard-auto {
@@ -142,6 +140,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    margin-top: 0.875rem;
 }
 
 .keyboard-checkbox {
@@ -152,8 +151,113 @@
 }
 
 .su-divider {
-    display: block;
-    width: 95%;
-    max-width: 500px;
-    border-top: 1px solid #c4c4c4;
+    display: none;
+}
+
+.su-keyboard-container {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+@media (max-width: 850px) {
+    .keyboard {
+        width: 80vw;
+        height: 12rem;
+    }
+
+    .keyboard-numeric {
+        width: 18%;
+        height: 2.625rem;
+    }
+
+    .key-delete-container {
+        width: 18%;
+        height: 2.625rem;
+    }
+
+    .key-candidate-delete {
+        transform: scale(0.5);
+    }
+
+    .keyboard-auto {
+        justify-content: center;
+    }
+
+    .su-divider {
+        display: block;
+        width: 95%;
+        max-width: 500px;
+        border-top: 1px solid #c4c4c4;
+        margin: 1rem 0;
+    }
+
+    .su-keyboard-container {
+        max-width: 450px;
+        margin: auto;
+    }
+}
+
+@media (min-width: 851px) {
+    .key-candidate-1 {
+        position: absolute;
+        margin-top: 0.25rem;
+        margin-left: 0.25rem;
+    }
+
+    .key-candidate-2 {
+        position: absolute;
+        left: 33.3333%;
+        margin-top: 0.25rem;
+    }
+
+    .key-candidate-3 {
+        position: absolute;
+        left: 66.6666%;
+        margin-top: 0.25rem;
+        margin-left: -0.25rem;
+    }
+
+    .key-candidate-4 {
+        position: absolute;
+        top: 33.3333%;
+        margin-left: 0.25rem;
+    }
+
+    .key-candidate-5 {
+        position: absolute;
+        top: 33.3333%;
+        left: 33.3333%;
+    }
+
+    .key-candidate-6 {
+        position: absolute;
+        top: 33.3333%;
+        left: 66.6666%;
+        margin-left: -0.25rem;
+    }
+
+    .key-candidate-7 {
+        position: absolute;
+        top: 66.6666%;
+        margin-top: -0.25rem;
+        margin-left: 0.25rem;
+    }
+
+    .key-candidate-8 {
+        position: absolute;
+        top: 66.6666%;
+        left: 33.3333%;
+        margin-top: -0.25rem;
+    }
+
+    .key-candidate-9 {
+        position: absolute;
+        top: 66.6666%;
+        left: 66.6666%;
+        margin-top: -0.25rem;
+        margin-left: -0.25rem;
+    }
 }
