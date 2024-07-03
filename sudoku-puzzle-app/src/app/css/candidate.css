@@ -3,8 +3,8 @@
     flex-direction: column;
     width: fit-content;
     margin: auto;
-    width: 5.0625rem;
-    height: 5.0625rem; 
+    max-width: 5.0625rem;
+    max-height: 5.0625rem; 
     justify-content: space-between;
 }
 
@@ -15,8 +15,10 @@
 }
 
 .candidate-button {
-    width: 33%; 
-    height: 33%;
+    width: 2vw; 
+    height: 2vw;
+    max-width: 1.6875rem;
+    max-height: 1.6875rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,4 +48,11 @@
     bottom: 0;
     right: 0;
     margin: auto;
+}
+
+@media (max-width: 850px) {
+    .candidate-button {
+        width: 3vw; 
+        height: 3vw;
+    }
 }

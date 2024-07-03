@@ -40,11 +40,7 @@ export const Cell: React.FunctionComponent<{
         <div 
             key={colIndex}
             onClick={onCellClick}
-            className={`cell-container 
-                ${isCellPrefilled ? "prefilled" : ""}
-                ${isCellSelected ? "selected" : ""}
-                ${shouldShowBottomBorder ? "cell-container-bottom-border" :""} 
-                ${shouldShowRightBorder? "cell-container-right-border" : ""}`}
+            className={`cell-container ${isCellPrefilled ? "prefilled" : ""} ${isCellSelected ? "selected" : ""} ${shouldShowBottomBorder ? "cell-container-bottom-border" :""} ${shouldShowRightBorder? "cell-container-right-border" : ""}`}
         >
             {
                 !shouldShowCandidate ? (
