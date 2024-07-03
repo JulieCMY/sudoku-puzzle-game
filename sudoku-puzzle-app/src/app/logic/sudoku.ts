@@ -1,9 +1,21 @@
 import { ObjectCollection, PlayerMatrics } from "../models/sudoku"
 
+/** 
+ * Returns the index of a Sudoku cell from 0 to 80 based on its row and column index.
+ * @param rowIndex the index of a certain sudoku cell's row
+ * @param colIndex the index of a certain sudoku cell's column
+ * @returns The index of sudoku cell from 0 to 80
+ */
 export const getSudokuCellIndex = (rowIndex: number, colIndex: number): number => {
     return rowIndex * 9 + colIndex
 }
 
+/**
+ * Returns the row and column index of a Sudoku cell based on its index from 0 to 80.
+ * 
+ * @param cellIndex - The index of the Sudoku cell from 0 to 80.
+ * @returns The index of the row and column of the cell.
+ */
 export const getSudokuRowColIndex = (cellIndex: number): {
     rowIndex: number,
     colIndex: number
@@ -16,6 +28,13 @@ export const getSudokuRowColIndex = (cellIndex: number): {
     }
 }
 
+/**
+ * Processes player data to update the Sudoku board with the player's matrix data.
+ * 
+ * @param data - The initial Sudoku board data as a 9 x 9 array.
+ * @param playerMatrics - The player's matrix data as an object with cell indices as keys and values.
+ * @returns The updated Sudoku board data as a 9 x 9 array.
+ */
 export const processSudokuPlayerData = (data: number[][], playerMatrics: PlayerMatrics): number[][] => {
     let playerData: number[][] = []
     data.map((rowData: number[], rowIndex: number) => {
@@ -31,6 +50,12 @@ export const processSudokuPlayerData = (data: number[][], playerMatrics: PlayerM
     return playerData
 }
 
+/**
+ * Finds the indices of duplicate cells in the player's Sudoku data.
+ * 
+ * @param playerData - The player's Sudoku board data as a 9 x 9 array.
+ * @returns An array of indices of duplicate cells.
+ */
 export const findDuplicateCellIndex = (playerData: number[][]): number[] => {
     let duplicatesList: number[] = []
 
@@ -38,7 +63,7 @@ export const findDuplicateCellIndex = (playerData: number[][]): number[] => {
     playerData.map((rowData: number[], rowIndex: number) => {
         const counter: ObjectCollection<number[]> = {}
         rowData.map((cellValue: number, colIndex: number) => {
-            if(!!cellValue) {
+            if (!!cellValue) {
                 counter[cellValue] = counter[cellValue] || []
                 counter[cellValue]?.push(getSudokuCellIndex(rowIndex, colIndex))
             }
@@ -91,12 +116,18 @@ export const findDuplicateCellIndex = (playerData: number[][]): number[] => {
         }
     }
 
-
     return duplicatesList.filter((value, index, self) => {
         return self.indexOf(value) === index
     })
 }
 
+/**
+ * Gets the list of all candidate numbers for a given Sudoku cell based on the current board data.
+ * 
+ * @param cellIndex - The index of the Sudoku cell from 0 to 80.
+ * @param sudokuData - The current Sudoku board data as a 9 x 9 array.
+ * @returns An array of candidate numbers for the cell.
+ */
 export const getAllCandidateList = (cellIndex: number, sudokuData: number[][]): number[] => {
     const { rowIndex, colIndex } = getSudokuRowColIndex(cellIndex)
     const allCandidateList = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -106,8 +137,8 @@ export const getAllCandidateList = (cellIndex: number, sudokuData: number[][]): 
         let threeTimesThreeList: number[] = []
         const rowStartIndex = Math.floor(rowIndex / 3) * 3
         const colStartIndex = Math.floor(colIndex / 3) * 3
-        for (let row = rowStartIndex; row < rowStartIndex + 3; row ++) {
-            for (let col = colStartIndex; col < colStartIndex + 3; col ++) {
+        for (let row = rowStartIndex; row < rowStartIndex + 3; row++) {
+            for (let col = colStartIndex; col < colStartIndex + 3; col++) {
                 threeTimesThreeList = [...threeTimesThreeList, sudokuData[row][col]]
             }
         }
