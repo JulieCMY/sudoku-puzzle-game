@@ -94,7 +94,7 @@ export const findDuplicateCellIndex = (playerData: number[][]): number[] => {
         })
     }
 
-    // find duplicates in 3 x 3 set
+    // find duplicates in 3 x 3 Sub-grid
     for (let row = 0; row < playerData.length; row = row + 3) {
         for (let col = 0; col < playerData[0].length; col = col + 3) {
             const counter: ObjectCollection<number[]> = {}
@@ -145,4 +145,75 @@ export const getAllCandidateList = (cellIndex: number, sudokuData: number[][]): 
 
         return !rowList.some(rowValue => rowValue === candidate) && !colList.some(colValue => colValue === candidate) && !threeTimesThreeList.some(threeSetValue => threeSetValue === candidate)
     })
+}
+
+/**
+ * Checks if it's valid to place a number in a given cell.
+ * 
+ * @param board - The Sudoku grid.
+ * @param row - The row index.
+ * @param col - The column index.
+ * @param num - The number to place.
+ * @returns True if valid, otherwise false.
+ */
+const isValidPlacement = (board: number[][], row: number, col: number, num: number): boolean => {
+    for (let x = 0; x < 9; x++) {
+        if (
+            board[row][x] === num ||
+            board[x][col] === num ||
+            board[Math.floor(row / 3) * 3 + Math.floor(x / 3)][Math.floor(col / 3) * 3 + x % 3] === num
+        ) {
+            return false
+        }
+    }
+    return true
+}
+
+/**
+ * Finds the next empty cell in the grid.
+ * 
+ * @param board - The Sudoku grid.
+ * @returns The row and column indices of the next empty cell, or null if there are no empty cells.
+ */
+const findEmptyCell = (board: number[][]): { row: number, col: number } | null => {
+    for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+            if (board[row][col] === 0) {
+                return { row, col }
+            }
+        }
+    }
+    return null
+}
+
+/**
+ * Solves the Sudoku puzzle using backtracking.
+ * 
+ * @param board - The Sudoku grid to solve.
+ * @returns True if the puzzle is solved, otherwise false.
+ */
+const solveSudokuTracking = (board: number[][]): boolean => {
+    const emptyCell = findEmptyCell(board);
+    if (!emptyCell) {
+        return true // Puzzle is solved
+    }
+
+    const { row, col } = emptyCell
+
+    for (let num = 1; num <= 9; num++) {
+        if (isValidPlacement(board, row, col, num)) {
+            board[row][col] = num;
+            if (solveSudokuTracking(board)) {
+                return true;
+            }
+            board[row][col] = 0 // Backtrack
+        }
+    }
+    return false
+}
+
+export const solveSudoku = (board: number[][]): number[][] => {
+    const solvedBoard = JSON.parse(JSON.stringify(board))
+    solveSudokuTracking(solvedBoard)
+    return solvedBoard
 }
