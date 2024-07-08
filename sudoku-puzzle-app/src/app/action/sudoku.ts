@@ -44,20 +44,23 @@ export const selectCandidateModeCheckbox = () => {
     } as const
 }
 
-export const selectDropdownRevealCell = () => {
+export const selectDropdownRevealCell = (id: number) => {
     return {
         type: "SELECT_DROPDOWN_REVEAL_CELL",
+        id
     } as const
 }
 
-export const selectDropdownRevealPuzzle = () => {
+export const selectDropdownRevealPuzzle = (id: number) => {
     return {
         type: "SELECT_DROPDOWN_REVEAL_PUZZLE",
+        id
     } as const
 }
 
-export const selectDropdownResetPuzzle = () => {
+export const selectDropdownResetPuzzle = (id: number) => {
     return {
         type: "SELECT_DROPDOWN_RESET_PUZZLE",
+        id
     } as const
 }

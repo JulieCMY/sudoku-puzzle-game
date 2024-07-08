@@ -4,16 +4,18 @@ import { useOutsideClick } from "../utils/common"
 import { useDispatch, useSelector } from "react-redux"
 import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle, selectDropdownRevealCell } from "../action/sudoku"
 import { SudokuState } from "../models/sudoku"
+import { sudokuBoardData } from "../data/sudokuData"
 
 export const ToolBar: React.FunctionComponent = () => {
     const dispatch = useDispatch()
+    const { sudokuId } = sudokuBoardData[0]
     const shouldRevealPuzzle = useSelector((state: SudokuState) => state.shouldRevealPuzzle)
     const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false)
 
     const dropdown = shouldRevealPuzzle ? [
         {
             text: "Reset Puzzle",
-            onClick: (): void => { dispatch(selectDropdownResetPuzzle()) }
+            onClick: (): void => { dispatch(selectDropdownResetPuzzle(sudokuId)) }
         }
     ] :[
         {
@@ -30,15 +32,15 @@ export const ToolBar: React.FunctionComponent = () => {
         },
         {
             text: "Reveal Cell",
-            onClick: (): void => { dispatch(selectDropdownRevealCell()) }
+            onClick: (): void => { dispatch(selectDropdownRevealCell(sudokuId)) }
         },
         {
             text: "Reveal Puzzle",
-            onClick: (): void => { dispatch(selectDropdownRevealPuzzle()) }
+            onClick: (): void => { dispatch(selectDropdownRevealPuzzle(sudokuId)) }
         },
         {
             text: "Reset Puzzle",
-            onClick: (): void => { dispatch(selectDropdownResetPuzzle()) }
+            onClick: (): void => { dispatch(selectDropdownResetPuzzle(sudokuId)) }
         }
     ]
 

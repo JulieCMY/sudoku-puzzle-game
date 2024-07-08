@@ -15,7 +15,8 @@ export const Board: React.FunctionComponent = () => {
     const shouldRevealPuzzle = useSelector((state: SudokuState) => state.shouldRevealPuzzle)
 
     const currentSudokuPlayerStats = playerStats[id] ?? {}
-    const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats, revealedData)
+    const currectRevealedData = revealedData[id] ?? []
+    const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats, currectRevealedData)
     const duplicatedCellIndexList = findDuplicateCellIndex(playerData)
 
     const onCellClick = (rowIndex: number, colIndex: number): void => {

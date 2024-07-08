@@ -8,7 +8,7 @@ const initialState: SudokuState = {
     selectedCellIndex: undefined,
     playerStats: {},
     candidateStats: {},
-    revealedCells: [],
+    revealedCells: {},
     isAutoCandidateModeOn: false,
     shouldRevealPuzzle: false,
     currentSudokuBoardData: sudokuBoardData[0].sudokuData
@@ -94,10 +94,14 @@ const sudokuReducer = (state = initialState, action: SudokuActions): SudokuState
         case "SELECT_DROPDOWN_REVEAL_CELL": {
             const { selectedCellIndex, revealedCells, currentSudokuBoardData } = state
             if (selectedCellIndex !== undefined) {
-                const currentRevealedCells = revealedCells.length === 0 ? currentSudokuBoardData : revealedCells
+                const revealCellList = revealedCells[action.id] ?? []
+                const currentRevealedCells = revealCellList.length === 0 ? currentSudokuBoardData : revealCellList
                 return {
                     ...state,
-                    revealedCells: processRevealSudokuCell(currentRevealedCells, selectedCellIndex)
+                    revealedCells: {
+                        ...revealedCells,
+                        [action.id]: processRevealSudokuCell(currentRevealedCells, selectedCellIndex)
+                    }
                 }
             }
             return state
@@ -106,15 +110,21 @@ const sudokuReducer = (state = initialState, action: SudokuActions): SudokuState
             return {
                 ...state,
                 shouldRevealPuzzle: true,
-                revealedCells: solveSudoku(state.currentSudokuBoardData)
+                revealedCells: {
+                    ...state.revealedCells,
+                    [action.id]: solveSudoku(state.currentSudokuBoardData)
+                }
             }
         }
         case "SELECT_DROPDOWN_RESET_PUZZLE": {
+            const { playerStats, revealedCells } = state
+            delete playerStats[action.id]
+            delete revealedCells[action.id]
             return {
                 ...state,
                 shouldRevealPuzzle: false,
-                revealedCells: [],
-                playerStats: {}
+                playerStats,
+                revealedCells
             }
         }
         default:
