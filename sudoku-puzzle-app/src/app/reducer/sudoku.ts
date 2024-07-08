@@ -1,15 +1,20 @@
 import { createStore } from "redux";
 import { SudokuActions } from "../action/sudoku";
 import { SudokuState } from "../models/sudoku";
+import { sudokuBoardData } from "../data/sudokuData";
+import { solveSudoku } from "../logic/sudoku";
 
 const initialState: SudokuState = {
     selectedCellIndex: undefined,
     playerStats: {},
     candidateStats: {},
-    isAutoCandidateModeOn: false
+    revealedCells: [],
+    isAutoCandidateModeOn: false,
+    shouldRevealPuzzle: false,
+    currentSudokuBoardData: sudokuBoardData[0].sudokuData
 }
 
-const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState => {
+const sudokuReducer = (state = initialState, action: SudokuActions): SudokuState => {
     switch (action.type) {
         case "SELECT_SUDOKU_CELL":
             return {
@@ -84,6 +89,21 @@ const sudokuReducer= (state = initialState, action: SudokuActions): SudokuState 
             return {
                 ...state,
                 isAutoCandidateModeOn: !state.isAutoCandidateModeOn
+            }
+        }
+        case "SELECT_DROPDOWN_REVEAL_PUZZLE": {
+            return {
+                ...state,
+                shouldRevealPuzzle: true,
+                revealedCells: solveSudoku(state.currentSudokuBoardData)
+            }
+        }
+        case "SELECT_DROPDOWN_RESET_PUZZLE": {
+            return {
+                ...state,
+                shouldRevealPuzzle: false,
+                revealedCells: [],
+                playerStats: {}
             }
         }
         default:

@@ -1,7 +1,7 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { selectSudokuKeyboard, deleteSudokuInput, selectCandidateModeCheckbox, selectSudokuCandidate } from "../action/sudoku"
-import { mockData } from "../data/mockData"
+import { sudokuBoardData } from "../data/sudokuData"
 import { text } from "../text/text"
 import { SudokuState } from "../models/sudoku"
 
@@ -15,7 +15,7 @@ enum KeyboardMode {
 export const Keyboard: React.FunctionComponent = () => {
     const dispatch = useDispatch()
     const isAutoCandidateModeOn = useSelector((state: SudokuState) => state.isAutoCandidateModeOn)
-    const { sudokuId } = mockData[0]
+    const { sudokuId } = sudokuBoardData[0]
     const [ keyboardMode, setKeyboardMode ] = React.useState<KeyboardMode>(KeyboardMode.NORMAL)
 
     const onModeButtonClick = (mode: KeyboardMode): void => {

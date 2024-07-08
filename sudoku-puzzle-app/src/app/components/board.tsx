@@ -2,18 +2,19 @@ import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
-import { findDuplicateCellIndex, getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
+import { findDuplicateCellIndex, getSudokuCellIndex, processSudokuPlayerData, solveSudoku } from "../logic/sudoku"
 import { SudokuState } from "../models/sudoku"
-import { mockData } from "../data/mockData"
+import { sudokuBoardData } from "../data/sudokuData"
 
 export const Board: React.FunctionComponent = () => {
     const dispatch = useDispatch()
-    const { sudokuId: id, sudokuData: data} = mockData[0]
-
+    const { sudokuId: id, sudokuData: data} = sudokuBoardData[0]
+    const revealedData = useSelector((state: SudokuState) => state.revealedCells)
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
     const playerStats = useSelector((state: SudokuState) => state.playerStats)
+    const shouldRevealPuzzle = useSelector((state: SudokuState) => state.shouldRevealPuzzle)
     const currentSudokuPlayerStats = playerStats[id] ?? {}
-    const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats)
+    const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats, revealedData)
     const duplicatedCellIndexList = findDuplicateCellIndex(playerData)
 
     const onCellClick = (rowIndex: number, colIndex: number): void => {
@@ -33,10 +34,11 @@ export const Board: React.FunctionComponent = () => {
                             sudokuData={data}
                             playerData={playerData}
                             sudokuId={id}
-                            isConflict={duplicatedCellIndexList.includes(getSudokuCellIndex(rowIndex, colIndex))}
+                            isConflict={!shouldRevealPuzzle && duplicatedCellIndexList.includes(getSudokuCellIndex(rowIndex, colIndex))}
                             value={cell}
                             rowIndex={rowIndex}
                             colIndex={colIndex}
+                            isCellRevealed={shouldRevealPuzzle}
                             onPress={onCellClick}
                         />
                     ))}

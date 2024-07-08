@@ -10,7 +10,7 @@ const data: number[][] = [
     [0, 0, 0, 5, 0, 0, 1, 0, 6]
 ]
 
-export const mockData = [
+export const sudokuBoardData = [
     {
         sudokuId: 1,
         sudokuData: data,

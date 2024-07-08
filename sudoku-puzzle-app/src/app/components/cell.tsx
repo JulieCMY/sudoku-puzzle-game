@@ -12,6 +12,7 @@ export const Cell: React.FunctionComponent<{
     rowIndex: number,
     colIndex: number,
     isConflict: boolean,
+    isCellRevealed: boolean
     onPress: (rowIndex: number, colIndex: number) => void
 }> = ({
     sudokuData,
@@ -21,6 +22,7 @@ export const Cell: React.FunctionComponent<{
     rowIndex,
     colIndex,
     isConflict,
+    isCellRevealed,
     onPress
 }) => {
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
@@ -45,7 +47,7 @@ export const Cell: React.FunctionComponent<{
             {
                 !shouldShowCandidate ? (
                     <div key={colIndex} className="numeric" style={{position: "relative"}}>
-                        <div className={`keyboard-svg key-${value}`} />
+                        <div className={`keyboard-svg key-${value} ${isCellRevealed && !isCellPrefilled && "key-reveal-puzzle"}`} />
                         <div className={`cell-conflict ${isConflict? "conflicted": ""}`}/>
                     </div>
                 ) : (

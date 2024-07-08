@@ -1,28 +1,44 @@
 import React from "react"
 import "../css/toolbar.css"
 import { useOutsideClick } from "../utils/common"
+import { useDispatch, useSelector } from "react-redux"
+import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle } from "../action/sudoku"
+import { SudokuState } from "../models/sudoku"
 
 export const ToolBar: React.FunctionComponent = () => {
+    const dispatch = useDispatch()
+    const shouldRevealPuzzle = useSelector((state: SudokuState) => state.shouldRevealPuzzle)
     const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false)
 
-    const dropdown = [
+    const dropdown = shouldRevealPuzzle ? [
         {
-            text: "Hint"
+            text: "Reset Puzzle",
+            onClick: (): void => { dispatch(selectDropdownResetPuzzle()) }
+        }
+    ] :[
+        {
+            text: "Hint",
+            onClick: (): void => {}
         },
         {
-            text: "Check Cell"
+            text: "Check Cell",
+            onClick: (): void => {}
         },
         {
-            text: "Check Puzzle"
+            text: "Check Puzzle",
+            onClick: (): void => {}
         },
         {
-            text: "Reveal Cell"
+            text: "Reveal Cell",
+            onClick: (): void => {}
         },
         {
-            text: "Reveal Puzzle"
+            text: "Reveal Puzzle",
+            onClick: (): void => { dispatch(selectDropdownRevealPuzzle()) }
         },
         {
-            text: "Reset Cell"
+            text: "Reset Puzzle",
+            onClick: (): void => { dispatch(selectDropdownResetPuzzle()) }
         }
     ]
 
@@ -49,9 +65,6 @@ export const ToolBar: React.FunctionComponent = () => {
                 </div>
             </div>
             <div className="su-toolbar-right">
-                <button className="pz-toolbar-button">
-                    <i className="su-app-help"/>
-                </button>
                 <div className="pz-dropdown">
                     <button className="pz-toolbar-button pz-toolbar-dropdown-button" onClick={onDropdownClick}>
                         <i className="su-app-kebab"/>
@@ -63,7 +76,10 @@ export const ToolBar: React.FunctionComponent = () => {
                                     {
                                         dropdown.map((item, index) => (
                                             <li className="pz-dropdown-menu-item" key={`pz-dropdown-item-${index}`}>
-                                                <button className={`pz-dropdown-button ${index !== 0 && "pz-dropdown-button-border"}`}>{item.text}</button>
+                                                <button 
+                                                    onClick={item.onClick}
+                                                    className={`pz-dropdown-button ${index !== 0 && "pz-dropdown-button-border"}`}
+                                                >{item.text}</button>
                                             </li>
                                         ))
                                     }
@@ -72,6 +88,9 @@ export const ToolBar: React.FunctionComponent = () => {
                         )
                     }
                 </div>
+                <button className="pz-toolbar-button">
+                    <i className="su-app-help"/>
+                </button>
             </div>         
         </div>
     )

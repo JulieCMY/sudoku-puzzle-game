@@ -62,6 +62,10 @@
     margin: auto;
 }
 
+.key-reveal-puzzle {
+    filter: invert(47%) sepia(83%) saturate(7486%) hue-rotate(193deg) brightness(106%) contrast(120%);
+}
+
 .key-1 {
     background-repeat: no-repeat;
     background-image: url(../images/1.svg);

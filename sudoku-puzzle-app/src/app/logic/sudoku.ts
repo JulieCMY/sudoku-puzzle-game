@@ -35,17 +35,16 @@ export const getSudokuRowColIndex = (cellIndex: number): {
  * @param playerMatrics - The player's matrix data as an object with cell indices as keys and values.
  * @returns The updated Sudoku board data as a 9 x 9 array.
  */
-export const processSudokuPlayerData = (data: number[][], playerMatrics: PlayerMatrics): number[][] => {
-    let playerData: number[][] = []
-    data.map((rowData: number[], rowIndex: number) => {
-        playerData = [
-            ...playerData,
-            [...rowData]
-        ]
-    })
+export const processSudokuPlayerData = (data: number[][], playerMatrics: PlayerMatrics, revealedData: number[][]): number[][] => {
+    const playerData: number[][] = JSON.parse(JSON.stringify(data))
     Object.keys(playerMatrics).map(cellIndex => {
         const { rowIndex, colIndex } = getSudokuRowColIndex(parseInt(cellIndex))
         playerData[rowIndex][colIndex] = playerMatrics[cellIndex]
+    })
+    revealedData.map((rowCells: number[], rowIndex: number) => {
+        rowCells.map((cell: number, colIndex: number) => {
+            playerData[rowIndex][colIndex] = cell
+        })
     })
     return playerData
 }

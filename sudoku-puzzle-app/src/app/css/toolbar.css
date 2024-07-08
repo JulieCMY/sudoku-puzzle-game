@@ -137,7 +137,7 @@
 .pz-dropdown {
     display: inline-block;
     position: relative;
-    margin-left: 1.25rem;
+    margin-right: 1.25rem;
 }
 
 .pz-toolbar-dropdown-button:hover {
@@ -147,13 +147,12 @@
 .pz-dropdown-list {
     width: 9.6875rem;
     position: absolute;
-    right: 0;
+    right: calc(-4.6875rem + 50%);
     z-index: 99;
     text-align: right;
     border: 0.0625rem solid #c4c4c4;
     background: #fff;
     box-shadow: 0rem 0.5rem 0.5rem 0rem rgba(0, 0, 0, .15);
-    right: calc(-4.6875rem + 50%);
 }
 
 .pz-dropdown-menu-item {
@@ -189,5 +188,8 @@
 @media (max-width: 550px) {
     .su-level {
         display: none;
+    }
+    .pz-game-toolbar {
+        padding: 0;
     }
 }
