@@ -12,10 +12,12 @@ export const Board: React.FunctionComponent = () => {
     const revealedData = useSelector((state: SudokuState) => state.revealedCells)
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
     const playerStats = useSelector((state: SudokuState) => state.playerStats)
+    const correctedCells = useSelector((state: SudokuState) => state.correctedCells)
     const shouldRevealPuzzle = useSelector((state: SudokuState) => state.shouldRevealPuzzle)
 
     const currentSudokuPlayerStats = playerStats[id] ?? {}
     const currectRevealedData = revealedData[id] ?? []
+    const currentCorrectedCells = correctedCells[id] ?? []
     const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats, currectRevealedData)
     const duplicatedCellIndexList = findDuplicateCellIndex(playerData)
 
@@ -26,8 +28,14 @@ export const Board: React.FunctionComponent = () => {
         }
     }
 
+    const checkIsCellConflict = (rowIndex: number, colIndex: number): boolean => {
+        return !shouldRevealPuzzle && duplicatedCellIndexList.includes(getSudokuCellIndex(rowIndex, colIndex))
+    }
     const checkIsCellRevealed = (rowIndex: number, colIndex: number): boolean => {
-        return shouldRevealPuzzle || !!revealedData?.[rowIndex]?.[colIndex]
+        return shouldRevealPuzzle || !!revealedData[id]?.[rowIndex]?.[colIndex]
+    }
+    const checkIsCellCorrected = (rowIndex: number, colIndex: number): boolean => {
+        return !checkIsCellRevealed(rowIndex, colIndex) && currentCorrectedCells.includes(getSudokuCellIndex(rowIndex, colIndex))
     }
 
     return (
@@ -40,11 +48,12 @@ export const Board: React.FunctionComponent = () => {
                             sudokuData={data}
                             playerData={playerData}
                             sudokuId={id}
-                            isConflict={!shouldRevealPuzzle && duplicatedCellIndexList.includes(getSudokuCellIndex(rowIndex, colIndex))}
+                            isCellConflict={checkIsCellConflict(rowIndex, colIndex)}
+                            isCellRevealed={checkIsCellRevealed(rowIndex, colIndex)}
+                            isCellCorrected={checkIsCellCorrected(rowIndex, colIndex)}
                             value={cell}
                             rowIndex={rowIndex}
                             colIndex={colIndex}
-                            isCellRevealed={checkIsCellRevealed(rowIndex, colIndex)}
                             onPress={onCellClick}
                         />
                     ))}

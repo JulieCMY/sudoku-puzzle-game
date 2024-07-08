@@ -226,3 +226,9 @@ export const processRevealSudokuCell = (board: number[][], cellIndex: number): n
     newBoard[rowIndex][colIndex] = solvedSudoku[rowIndex][colIndex]
     return newBoard
 }
+
+export const checkIsCorrectPlacement = (board: number[][], cellValue: number, cellIndex: number): boolean => {
+    const { rowIndex, colIndex } = getSudokuRowColIndex(cellIndex)
+    const solvedSudoku = solveSudoku(board)
+    return cellValue === solvedSudoku[rowIndex][colIndex]
+}

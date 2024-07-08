@@ -2,7 +2,7 @@ import React from "react"
 import "../css/toolbar.css"
 import { useOutsideClick } from "../utils/common"
 import { useDispatch, useSelector } from "react-redux"
-import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle, selectDropdownRevealCell } from "../action/sudoku"
+import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle, selectDropdownRevealCell, selectDropdownCheckCell, selectDropdownCheckPuzzle } from "../action/sudoku"
 import { SudokuState } from "../models/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
 
@@ -24,11 +24,11 @@ export const ToolBar: React.FunctionComponent = () => {
         },
         {
             text: "Check Cell",
-            onClick: (): void => {}
+            onClick: (): void => { dispatch(selectDropdownCheckCell(sudokuId)) }
         },
         {
             text: "Check Puzzle",
-            onClick: (): void => {}
+            onClick: (): void => { dispatch(selectDropdownCheckPuzzle(sudokuId)) }
         },
         {
             text: "Reveal Cell",

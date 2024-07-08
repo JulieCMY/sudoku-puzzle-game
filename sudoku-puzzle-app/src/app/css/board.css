@@ -20,6 +20,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 @media (max-width: 850px) {
@@ -80,4 +81,16 @@
 
 .empty {
   cursor: pointer;
+}
+
+.cell-correction {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 2px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  background-color: #ff4b56;
 }
