@@ -16,7 +16,7 @@ export const Candidate: React.FunctionComponent<{sudokuId: number, sudokuData: n
     const isAutoCandidateModeOn = useSelector((state: SudokuState) => state.isAutoCandidateModeOn)
     const candidateStats = useSelector((state: SudokuState) => state.candidateStats)
     const candidateData = candidateStats[sudokuId] ?? {}
-    const candidateList = !!cellIndex ? candidateData[cellIndex] : []
+    const candidateList = cellIndex !== undefined ? candidateData[cellIndex] : []
     const allValidCandidateList = getAllCandidateList(cellIndex, playerData)
 
     const onCandidateButtonClick = (id: number, value: number): void => {

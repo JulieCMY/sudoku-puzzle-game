@@ -67,7 +67,7 @@ const sudokuReducer = (state = initialState, action: SudokuActions): SudokuState
         }
         case "SELECT_SUDOKU_CANDIDATE": {
             const selectedCellIndex = state.selectedCellIndex
-            if (selectedCellIndex) {
+            if (selectedCellIndex !== undefined) {
                 const userData = state.candidateStats[action.id] ?? {}
                 const candidateList = userData[selectedCellIndex] ?? []
                 if (candidateList.includes(action.value)) {
