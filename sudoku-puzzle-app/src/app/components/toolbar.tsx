@@ -2,7 +2,7 @@ import React from "react"
 import "../css/toolbar.css"
 import { useOutsideClick } from "../utils/common"
 import { useDispatch, useSelector } from "react-redux"
-import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle } from "../action/sudoku"
+import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle, selectDropdownRevealCell } from "../action/sudoku"
 import { SudokuState } from "../models/sudoku"
 
 export const ToolBar: React.FunctionComponent = () => {
@@ -30,7 +30,7 @@ export const ToolBar: React.FunctionComponent = () => {
         },
         {
             text: "Reveal Cell",
-            onClick: (): void => {}
+            onClick: (): void => { dispatch(selectDropdownRevealCell()) }
         },
         {
             text: "Reveal Puzzle",

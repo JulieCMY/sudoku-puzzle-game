@@ -43,7 +43,9 @@ export const processSudokuPlayerData = (data: number[][], playerMatrics: PlayerM
     })
     revealedData.map((rowCells: number[], rowIndex: number) => {
         rowCells.map((cell: number, colIndex: number) => {
-            playerData[rowIndex][colIndex] = cell
+            if (!!cell) {
+                playerData[rowIndex][colIndex] = cell
+            }
         })
     })
     return playerData
@@ -215,4 +217,12 @@ export const solveSudoku = (board: number[][]): number[][] => {
     const solvedBoard = JSON.parse(JSON.stringify(board))
     solveSudokuTracking(solvedBoard)
     return solvedBoard
+}
+
+export const processRevealSudokuCell = (board: number[][], cellIndex: number): number[][] => {
+    const { rowIndex, colIndex } = getSudokuRowColIndex(cellIndex)
+    const solvedSudoku = solveSudoku(board)
+    const newBoard = JSON.parse(JSON.stringify(board))
+    newBoard[rowIndex][colIndex] = solvedSudoku[rowIndex][colIndex]
+    return newBoard
 }

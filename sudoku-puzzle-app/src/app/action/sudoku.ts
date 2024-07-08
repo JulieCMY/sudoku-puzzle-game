@@ -4,6 +4,7 @@ export type SudokuActions =
     | ReturnType<typeof deleteSudokuInput>
     | ReturnType<typeof selectSudokuCandidate>
     | ReturnType<typeof selectCandidateModeCheckbox>
+    | ReturnType<typeof selectDropdownRevealCell>
     | ReturnType<typeof selectDropdownRevealPuzzle>
     | ReturnType<typeof selectDropdownResetPuzzle>
 
@@ -40,6 +41,12 @@ export const selectSudokuCandidate = (id: number, value: number) => {
 export const selectCandidateModeCheckbox = () => {
     return {
         type: "SELECT_CANDIDATE_MODE_CHECKBOX",
+    } as const
+}
+
+export const selectDropdownRevealCell = () => {
+    return {
+        type: "SELECT_DROPDOWN_REVEAL_CELL",
     } as const
 }
 

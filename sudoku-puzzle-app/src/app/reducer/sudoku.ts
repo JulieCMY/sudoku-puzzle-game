@@ -2,7 +2,7 @@ import { createStore } from "redux";
 import { SudokuActions } from "../action/sudoku";
 import { SudokuState } from "../models/sudoku";
 import { sudokuBoardData } from "../data/sudokuData";
-import { solveSudoku } from "../logic/sudoku";
+import { processRevealSudokuCell, solveSudoku } from "../logic/sudoku";
 
 const initialState: SudokuState = {
     selectedCellIndex: undefined,
@@ -90,6 +90,17 @@ const sudokuReducer = (state = initialState, action: SudokuActions): SudokuState
                 ...state,
                 isAutoCandidateModeOn: !state.isAutoCandidateModeOn
             }
+        }
+        case "SELECT_DROPDOWN_REVEAL_CELL": {
+            const { selectedCellIndex, revealedCells, currentSudokuBoardData } = state
+            if (selectedCellIndex !== undefined) {
+                const currentRevealedCells = revealedCells.length === 0 ? currentSudokuBoardData : revealedCells
+                return {
+                    ...state,
+                    revealedCells: processRevealSudokuCell(currentRevealedCells, selectedCellIndex)
+                }
+            }
+            return state
         }
         case "SELECT_DROPDOWN_REVEAL_PUZZLE": {
             return {

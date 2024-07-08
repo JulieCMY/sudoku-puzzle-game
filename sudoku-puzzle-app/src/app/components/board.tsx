@@ -2,7 +2,7 @@ import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
-import { findDuplicateCellIndex, getSudokuCellIndex, processSudokuPlayerData, solveSudoku } from "../logic/sudoku"
+import { findDuplicateCellIndex, getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
 import { SudokuState } from "../models/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
 
@@ -13,6 +13,7 @@ export const Board: React.FunctionComponent = () => {
     const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
     const playerStats = useSelector((state: SudokuState) => state.playerStats)
     const shouldRevealPuzzle = useSelector((state: SudokuState) => state.shouldRevealPuzzle)
+
     const currentSudokuPlayerStats = playerStats[id] ?? {}
     const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats, revealedData)
     const duplicatedCellIndexList = findDuplicateCellIndex(playerData)
@@ -22,6 +23,10 @@ export const Board: React.FunctionComponent = () => {
         if (selectedCellIndex !== selectedIndex) {
             dispatch(selectSudokuCell(selectedIndex))
         }
+    }
+
+    const checkIsCellRevealed = (rowIndex: number, colIndex: number): boolean => {
+        return shouldRevealPuzzle || !!revealedData?.[rowIndex]?.[colIndex]
     }
 
     return (
@@ -38,7 +43,7 @@ export const Board: React.FunctionComponent = () => {
                             value={cell}
                             rowIndex={rowIndex}
                             colIndex={colIndex}
-                            isCellRevealed={shouldRevealPuzzle}
+                            isCellRevealed={checkIsCellRevealed(rowIndex, colIndex)}
                             onPress={onCellClick}
                         />
                     ))}
