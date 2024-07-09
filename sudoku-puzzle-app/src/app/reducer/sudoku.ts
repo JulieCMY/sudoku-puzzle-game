@@ -1,4 +1,5 @@
 import { createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly"
 import { SudokuActions } from "../action/sudoku";
 import { SudokuState } from "../models/sudoku";
 import { sudokuBoardData } from "../data/sudokuData";
@@ -210,6 +211,6 @@ const sudokuReducer = (state = initialState, action: SudokuActions): SudokuState
     }
 }
 
-const store = createStore(sudokuReducer);
+const store = createStore(sudokuReducer, composeWithDevTools());
 
 export default store
