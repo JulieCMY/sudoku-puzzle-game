@@ -197,13 +197,17 @@ const sudokuReducer = (state = initialState, action: SudokuActions): SudokuState
         }
         case "SELECT_DROPDOWN_RESET_PUZZLE": {
             const { playerStats, revealedCells } = state
-            delete playerStats[action.id]
-            delete revealedCells[action.id]
             return {
                 ...state,
                 shouldRevealPuzzle: false,
-                playerStats,
-                revealedCells
+                playerStats: {
+                    ...playerStats,
+                    [action.id]: {}
+                },
+                revealedCells: {
+                    ...revealedCells,
+                    [action.id]: []
+                }
             }
         }
         default:
