@@ -1,30 +1,72 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { connect } from "react-redux"
 import { selectSudokuCell } from "../action/sudoku"
 import { Cell } from "./cell"
 import { findDuplicateCellIndex, getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
-import { SudokuState } from "../models/sudoku"
+import { ObjectCollection } from "../models/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
+import { RootState } from "../models/state"
 
-export const Board: React.FunctionComponent = () => {
-    const dispatch = useDispatch()
-    const { sudokuId: id, sudokuData: data} = sudokuBoardData[0]
-    const revealedData = useSelector((state: SudokuState) => state.revealedCells)
-    const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
-    const playerStats = useSelector((state: SudokuState) => state.playerStats)
-    const correctedCells = useSelector((state: SudokuState) => state.correctedCells)
-    const shouldRevealPuzzle = useSelector((state: SudokuState) => state.shouldRevealPuzzle)
+interface StateProps {
+    sudokuId: number
+    sudokuData: number[][]
+    selectedCellIndex: number | undefined
+    shouldRevealPuzzle: boolean
+    revealedCells: ObjectCollection<number[][]>
+    playerData: number[][]
+    currentCorrectedCells: number[]
+    duplicatedCellIndexList: number[]
+}
 
-    const currentSudokuPlayerStats = playerStats[id] ?? {}
-    const currectRevealedData = revealedData[id] ?? []
-    const currentCorrectedCells = correctedCells[id] ?? []
-    const playerData = processSudokuPlayerData(data, currentSudokuPlayerStats, currectRevealedData)
+interface DispatchProps {
+    selectSudokuCell: typeof selectSudokuCell
+}
+
+interface BoardProps extends StateProps, DispatchProps {}
+
+function mapStateToProps(state: RootState): StateProps {
+    const { sudokuId, sudokuData} = sudokuBoardData[0]
+    const { 
+        revealedCells, 
+        selectedCellIndex, 
+        playerStats, 
+        correctedCells, 
+        shouldRevealPuzzle 
+    } = state.sudoku
+    const currentSudokuPlayerStats = playerStats[sudokuId] ?? {}
+    const currectRevealedData = revealedCells[sudokuId] ?? []
+    const currentCorrectedCells = correctedCells[sudokuId] ?? []
+    const playerData = processSudokuPlayerData(sudokuData, currentSudokuPlayerStats, currectRevealedData)
     const duplicatedCellIndexList = findDuplicateCellIndex(playerData)
+    return {
+        sudokuId,
+        sudokuData,
+        selectedCellIndex,
+        shouldRevealPuzzle,
+        revealedCells,
+        playerData,
+        currentCorrectedCells,
+        duplicatedCellIndexList
+    }
+}
+
+const BoardComponent: React.FunctionComponent<BoardProps> = (props) => {
+    const {
+        sudokuId,
+        sudokuData,
+        selectedCellIndex,
+        shouldRevealPuzzle,
+        revealedCells,
+        playerData,
+        currentCorrectedCells,
+        duplicatedCellIndexList,
+        selectSudokuCell
+    } = props
 
     const onCellClick = (rowIndex: number, colIndex: number): void => {
         const selectedIndex = getSudokuCellIndex(rowIndex, colIndex)
         if (selectedCellIndex !== selectedIndex) {
-            dispatch(selectSudokuCell(selectedIndex))
+            selectSudokuCell(selectedIndex)
         }
     }
 
@@ -32,7 +74,7 @@ export const Board: React.FunctionComponent = () => {
         return !shouldRevealPuzzle && duplicatedCellIndexList.includes(getSudokuCellIndex(rowIndex, colIndex))
     }
     const checkIsCellRevealed = (rowIndex: number, colIndex: number): boolean => {
-        return shouldRevealPuzzle || !!revealedData[id]?.[rowIndex]?.[colIndex]
+        return shouldRevealPuzzle || !!revealedCells[sudokuId]?.[rowIndex]?.[colIndex]
     }
     const checkIsCellCorrected = (rowIndex: number, colIndex: number): boolean => {
         return !checkIsCellRevealed(rowIndex, colIndex) && currentCorrectedCells.includes(getSudokuCellIndex(rowIndex, colIndex))
@@ -45,9 +87,9 @@ export const Board: React.FunctionComponent = () => {
                     {row.map((cell: number, colIndex: number) => (
                         <Cell 
                             key={getSudokuCellIndex(rowIndex, colIndex)}
-                            sudokuData={data}
+                            sudokuData={sudokuData}
                             playerData={playerData}
-                            sudokuId={id}
+                            sudokuId={sudokuId}
                             isCellConflict={checkIsCellConflict(rowIndex, colIndex)}
                             isCellRevealed={checkIsCellRevealed(rowIndex, colIndex)}
                             isCellCorrected={checkIsCellCorrected(rowIndex, colIndex)}
@@ -62,3 +104,12 @@ export const Board: React.FunctionComponent = () => {
         </div>
     )
 }
+
+const dispatchActions = {
+    selectSudokuCell
+}
+
+export const Board = connect<StateProps, DispatchProps, {}, RootState>(
+    mapStateToProps,
+    dispatchActions
+)(BoardComponent)

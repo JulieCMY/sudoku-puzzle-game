@@ -1,9 +1,11 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch, connect } from "react-redux"
 import { selectSudokuKeyboard, deleteSudokuInput, selectCandidateModeCheckbox, selectSudokuCandidate } from "../action/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
 import { text } from "../text/text"
 import { SudokuState } from "../models/sudoku"
+import { RootState } from "../models/state"
+import { arePropsEqual } from "../utils/props_comparer"
 
 const keyboardInput: number[] = Array.from({ length: 9 }, (_, i) => i + 1)
 
@@ -12,9 +14,36 @@ enum KeyboardMode {
     CANDIDATE = "CANDIDATE"
 }
 
-export const Keyboard: React.FunctionComponent = () => {
-    const dispatch = useDispatch()
-    const isAutoCandidateModeOn = useSelector((state: SudokuState) => state.isAutoCandidateModeOn)
+interface StateProps {
+    isAutoCandidateModeOn: boolean
+}
+
+interface DispatchProps {
+    selectSudokuKeyboard: typeof selectSudokuKeyboard
+    selectSudokuCandidate: typeof selectSudokuCandidate
+    deleteSudokuInput: typeof deleteSudokuInput
+    selectCandidateModeCheckbox: typeof selectCandidateModeCheckbox
+}
+
+interface KeyboardProps extends StateProps, DispatchProps {}
+
+function mapStateToProps(state: RootState): StateProps {
+    const { 
+        isAutoCandidateModeOn
+    } = state.sudoku
+    return {
+        isAutoCandidateModeOn
+    }
+}
+
+const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
+    const {
+        isAutoCandidateModeOn,
+        selectSudokuKeyboard,
+        selectSudokuCandidate,
+        deleteSudokuInput,
+        selectCandidateModeCheckbox
+    } = props
     const { sudokuId } = sudokuBoardData[0]
     const [ keyboardMode, setKeyboardMode ] = React.useState<KeyboardMode>(KeyboardMode.NORMAL)
 
@@ -23,16 +52,16 @@ export const Keyboard: React.FunctionComponent = () => {
     }
     const onNumericButtonClick = (id: number, value: number): void => {
         if (keyboardMode===KeyboardMode.NORMAL) {
-            dispatch(selectSudokuKeyboard(id, value))
+            selectSudokuKeyboard(id, value)
         } else {
-            dispatch(selectSudokuCandidate(id, value))
+            selectSudokuCandidate(id, value)
         }
     }
     const onDeleteButtonClick = (id: number): void => {
-        dispatch(deleteSudokuInput(id))
+        deleteSudokuInput(id)
     }
     const onAutoCandidateModeCheckboxClick = (): void => {
-        dispatch(selectCandidateModeCheckbox())
+        selectCandidateModeCheckbox()
     }
 
     return (
@@ -83,3 +112,15 @@ export const Keyboard: React.FunctionComponent = () => {
         </>
     )
 }
+
+const dispatchActions = {
+    selectSudokuKeyboard,
+    selectSudokuCandidate,
+    deleteSudokuInput,
+    selectCandidateModeCheckbox
+}
+
+export const Keyboard = connect<StateProps, DispatchProps, {}, RootState>(
+    mapStateToProps,
+    dispatchActions
+)(KeyboardComponent)

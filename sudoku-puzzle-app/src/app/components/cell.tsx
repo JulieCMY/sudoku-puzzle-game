@@ -1,10 +1,17 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import { connect, useSelector } from "react-redux"
 import { Candidate } from "./candidate"
 import { SudokuState } from "../models/sudoku"
 import { getSudokuCellIndex } from "../logic/sudoku"
+import { RootState } from "../models/state"
+import { arePropsEqual } from "../utils/props_comparer"
 
-export const Cell: React.FunctionComponent<{
+interface StateProps {
+    selectedCellIndex: number | undefined
+    isAutoCandidateModeOn: boolean
+}
+
+interface PassthroughProps {
     sudokuData: number[][],
     playerData: number[][],
     sudokuId: number,
@@ -15,20 +22,40 @@ export const Cell: React.FunctionComponent<{
     isCellRevealed: boolean,
     isCellCorrected: boolean
     onPress: (rowIndex: number, colIndex: number) => void
-}> = ({
-    sudokuData,
-    playerData,
-    sudokuId,
-    value,
-    rowIndex,
-    colIndex,
-    isCellConflict,
-    isCellRevealed,
-    isCellCorrected,
-    onPress
-}) => {
-    const selectedCellIndex = useSelector((state: SudokuState) => state.selectedCellIndex)
-    const isAutoCandidateModeOn = useSelector((state: SudokuState) => state.isAutoCandidateModeOn)
+}
+
+const areStatePropsEqual = (nextState: StateProps, prevState: StateProps): boolean => {
+    return arePropsEqual<StateProps>(prevState, nextState)
+}
+
+interface CellProps extends StateProps, PassthroughProps {}
+
+function mapStateToProps(state: RootState): StateProps {
+    const { 
+        selectedCellIndex,
+        isAutoCandidateModeOn
+    } = state.sudoku
+    return {
+        selectedCellIndex,
+        isAutoCandidateModeOn
+    }
+}
+
+const CellComponent: React.FunctionComponent<CellProps> = (props) => {
+    const {
+        sudokuData,
+        playerData,
+        sudokuId,
+        value,
+        rowIndex,
+        colIndex,
+        selectedCellIndex,
+        isAutoCandidateModeOn,
+        isCellConflict,
+        isCellRevealed,
+        isCellCorrected,
+        onPress
+    } = props
     const initialCellValue = sudokuData[rowIndex][colIndex]
     const isCellPrefilled = !!initialCellValue
     const isCellSelected = selectedCellIndex === getSudokuCellIndex(rowIndex, colIndex)
@@ -57,7 +84,6 @@ export const Cell: React.FunctionComponent<{
                     <div key={colIndex}>
                         <Candidate 
                             sudokuId={sudokuId}
-                            sudokuData={sudokuData}
                             playerData={playerData}
                             cellIndex={getSudokuCellIndex(rowIndex, colIndex)}
                             isCellSelected={isCellSelected}
@@ -68,3 +94,5 @@ export const Cell: React.FunctionComponent<{
         </div>
     )
 }
+
+export const Cell = connect(mapStateToProps, undefined, undefined, { areStatePropsEqual})(CellComponent)

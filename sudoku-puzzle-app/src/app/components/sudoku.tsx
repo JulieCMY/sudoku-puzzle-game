@@ -20,11 +20,11 @@ export const Sudoku: React.FunctionComponent = () => {
                     <Keyboard /> 
                 </div>        
             </div>
-            <Dialog>
+            {/* <Dialog>
                 <i className="su-modal-star" />
                 <h1 className="modal-system-header">Congrats!</h1>
                 <p className="modal-system-subheader">You finished a <span className="highlight">medium</span> puzzle in 7:49.</p>
-            </Dialog>
+            </Dialog> */}
         </div>
     )
 }

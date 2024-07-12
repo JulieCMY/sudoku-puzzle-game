@@ -1,9 +1,10 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { connect } from "react-redux"
 import { selectSudokuCandidate } from "../action/sudoku"
 import { Icon } from "./icon"
-import { SudokuState } from "../models/sudoku"
+import { RootState } from "../models/state"
 import { getAllCandidateList } from "../logic/sudoku"
+import { arePropsEqual } from "../utils/props_comparer"
 
 const candidateInput: number[][] = [
     [1, 2, 3],
@@ -11,17 +12,59 @@ const candidateInput: number[][] = [
     [7, 8, 9]
 ]
 
-export const Candidate: React.FunctionComponent<{sudokuId: number, sudokuData: number[][], playerData: number[][], cellIndex: number, isCellSelected: boolean}> = ({sudokuId, sudokuData, playerData, cellIndex, isCellSelected}) => {
-    const dispatch = useDispatch()
-    const isAutoCandidateModeOn = useSelector((state: SudokuState) => state.isAutoCandidateModeOn)
-    const candidateStats = useSelector((state: SudokuState) => state.candidateStats)
+interface StateProps {
+    isAutoCandidateModeOn: boolean
+    candidateList: number[]
+    allValidCandidateList: number[]
+}
+
+interface DispatchProps {
+    selectSudokuCandidate: typeof selectSudokuCandidate
+}
+
+interface PassthroughProps {
+    sudokuId: number
+    cellIndex: number
+    isCellSelected: boolean
+    playerData: number[][]
+
+}
+
+interface ContainerProps extends PassthroughProps {}
+
+interface CandidateProps extends StateProps, DispatchProps, PassthroughProps {}
+
+const areStatePropsEqual = (nextState: StateProps, prevState: StateProps): boolean => {
+    return arePropsEqual<StateProps>(prevState, nextState)
+}
+
+function mapStateToProps(state: RootState, ownProps: ContainerProps): StateProps {
+    const { isAutoCandidateModeOn, candidateStats } = state.sudoku
+    const { sudokuId, playerData, cellIndex } = ownProps
     const candidateData = candidateStats[sudokuId] ?? {}
     const candidateList = cellIndex !== undefined ? candidateData[cellIndex] : []
     const allValidCandidateList = getAllCandidateList(cellIndex, playerData)
 
+    return {
+        isAutoCandidateModeOn,
+        candidateList,
+        allValidCandidateList
+    }
+}
+
+const CandidateComponent: React.FunctionComponent<CandidateProps> = (props) => {
+    const {
+        sudokuId,
+        isCellSelected,
+        isAutoCandidateModeOn,
+        allValidCandidateList,
+        candidateList,
+        selectSudokuCandidate
+    } = props
+
     const onCandidateButtonClick = (id: number, value: number): void => {
         if (isCellSelected && !isAutoCandidateModeOn) {
-            dispatch(selectSudokuCandidate(id, value))
+            selectSudokuCandidate(id, value)
         }
     }
 
@@ -52,3 +95,9 @@ export const Candidate: React.FunctionComponent<{sudokuId: number, sudokuData: n
         </div>
     )
 }
+
+const dispatchActions: DispatchProps = {
+    selectSudokuCandidate
+}
+
+export const Candidate = connect(mapStateToProps, dispatchActions, undefined, { areStatePropsEqual})(CandidateComponent)
