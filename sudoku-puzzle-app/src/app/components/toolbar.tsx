@@ -1,5 +1,4 @@
 import React from "react"
-import "../css/toolbar.css"
 import { useOutsideClick } from "../utils/common"
 import { useDispatch, useSelector } from "react-redux"
 import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle, selectDropdownRevealCell, selectDropdownCheckCell, selectDropdownCheckPuzzle } from "../action/sudoku"
