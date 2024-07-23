@@ -14,7 +14,7 @@ const initialState: SudokuState = {
     currentSudokuBoardData: sudokuBoardData[0].sudokuData
 }
 
-export const sudokuReducer = (state = initialState, action: SudokuActions): SudokuState => {
+export const sudoku = (state = initialState, action: SudokuActions): SudokuState => {
     switch (action.type) {
         case "SELECT_SUDOKU_CELL":
             return {

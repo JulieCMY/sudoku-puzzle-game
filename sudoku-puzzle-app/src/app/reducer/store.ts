@@ -1,10 +1,12 @@
 import combineSectionReducers from "combine-section-reducers"
 import { configureStore } from "@reduxjs/toolkit"
-import { sudokuReducer } from "./sudoku"
+import { sudoku } from "./sudoku"
+import { dialog } from "./dialog"
 
 const store = configureStore({
     reducer: combineSectionReducers({
-        sudoku: sudokuReducer
+        sudoku,
+        dialog
     })
 });
 

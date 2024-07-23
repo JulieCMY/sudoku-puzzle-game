@@ -2,7 +2,7 @@ import React from "react"
 import { ToolBar } from "./toolbar"
 import { Board } from "./board"
 import { Keyboard } from "./keyboard"
-import { Dialog } from "./dialog"
+import { DialogCompletePuzzle } from "./dialog_complete_puzzle"
 import "../css/body.css"
 import "../css/board.css"
 import "../css/keyboard.css"
@@ -20,11 +20,7 @@ export const Sudoku: React.FunctionComponent = () => {
                     <Keyboard /> 
                 </div>        
             </div>
-            {/* <Dialog>
-                <i className="su-modal-star" />
-                <h1 className="modal-system-header">Congrats!</h1>
-                <p className="modal-system-subheader">You finished a <span className="highlight">medium</span> puzzle in 7:49.</p>
-            </Dialog> */}
+            <DialogCompletePuzzle />
         </div>
     )
 }
