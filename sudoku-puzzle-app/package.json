@@ -1,5 +1,6 @@
 {
   "name": "sudoku-puzzle-app",
+  "homepage": "https://juliecmy.github.io/sudoku-puzzle-game/",
   "version": "0.1.0",
   "private": true,
   "scripts": {
