@@ -1,7 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-    output: "export",
-    basePath: "/sudoku-puzzle-game"
-};
+const nextConfig = {};
 
 export default nextConfig;
