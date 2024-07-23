@@ -22,12 +22,14 @@ export const sudokuReducer = (state = initialState, action: SudokuActions): Sudo
                 selectedCellIndex: action.index,
             }
         case "SELECT_SUDOKU_KEYBOARD": {
-            const { selectedCellIndex, playerStats, correctedCells } = state
+            const { selectedCellIndex } = state
+            const playerStats = { ...state.playerStats }
+            const correctedCells = { ...state.correctedCells }
             if (selectedCellIndex !== undefined) {
-                const userData = playerStats[action.id] ?? {}
+                const userData = { ...playerStats[action.id] }
                 const currentSudokuInput = userData[selectedCellIndex]
                 userData[selectedCellIndex] = action.value
-                let correctedData = correctedCells[action.id] ?? []
+                let correctedData = [...(correctedCells[action.id] ?? [])]
                 if (correctedData.includes(selectedCellIndex) && !!currentSudokuInput && currentSudokuInput !== action.value) {
                     correctedData = correctedData.filter(cellIndex => cellIndex !== selectedCellIndex)
                 }
@@ -48,13 +50,13 @@ export const sudokuReducer = (state = initialState, action: SudokuActions): Sudo
         case "DELETE_SUDOKU_INPUT": {
             const { selectedCellIndex, playerStats, candidateStats, correctedCells } = state
             if (selectedCellIndex !== undefined) {
-                const playerData = playerStats[action.id] ?? {}
+                const playerData = { ...playerStats[action.id] }
                 const sudokuInput = playerData[selectedCellIndex]
-                const candidateData = candidateStats[action.id] ?? {}
-                const candidateList = candidateData[selectedCellIndex] ?? []
+                const candidateData = { ...candidateStats[action.id] }
+                const candidateList = [...(candidateData[selectedCellIndex] ?? [])]
                 if (sudokuInput) {
                     delete playerData[selectedCellIndex]
-                    const correctedData = (correctedCells[action.id] ?? []).filter(cellIndex => cellIndex !== selectedCellIndex)
+                    const correctedData = ([...(correctedCells[action.id] ?? [])]).filter(cellIndex => cellIndex !== selectedCellIndex)
                     return {
                         ...state,
                         playerStats: {
@@ -82,7 +84,7 @@ export const sudokuReducer = (state = initialState, action: SudokuActions): Sudo
         case "SELECT_SUDOKU_CANDIDATE": {
             const selectedCellIndex = state.selectedCellIndex
             if (selectedCellIndex !== undefined) {
-                const userData = state.candidateStats[action.id] ?? {}
+                const userData = { ...state.candidateStats[action.id] }
                 const candidateList = userData[selectedCellIndex] ?? []
                 if (candidateList.includes(action.value)) {
                     userData[selectedCellIndex] = [...candidateList.filter(value => value !== action.value)]
@@ -108,10 +110,10 @@ export const sudokuReducer = (state = initialState, action: SudokuActions): Sudo
         case "SELECT_DROPDOWN_CHECK_CELL": {
             const { selectedCellIndex, playerStats, revealedCells, correctedCells, currentSudokuBoardData } = state
             if (selectedCellIndex !== undefined) {
-                const playerData = playerStats[action.id] ?? {}
+                const playerData = { ...playerStats[action.id] }
                 const sudokuInput = playerData[selectedCellIndex]
                 if (checkIsCorrectPlacement(currentSudokuBoardData, sudokuInput, selectedCellIndex)) {
-                    const revealCellList = revealedCells[action.id] ?? []
+                    const revealCellList = [...(revealedCells[action.id] ?? [])]
                     const currentRevealedCells = revealCellList.length === 0 ? currentSudokuBoardData : revealCellList
                     const { rowIndex, colIndex } = getSudokuRowColIndex(selectedCellIndex)
                     const newRevealedCells = JSON.parse(JSON.stringify(currentRevealedCells))
@@ -141,8 +143,8 @@ export const sudokuReducer = (state = initialState, action: SudokuActions): Sudo
         }
         case "SELECT_DROPDOWN_CHECK_PUZZLE": {
             const { playerStats, revealedCells, correctedCells, currentSudokuBoardData } = state
-            const playerData = playerStats[action.id] ?? {}
-            const revealCellList = revealedCells[action.id] ?? []
+            const playerData = { ...playerStats[action.id] }
+            const revealCellList = [...(revealedCells[action.id] ?? [])]
             const currentRevealedCells = revealCellList.length === 0 ? currentSudokuBoardData : revealCellList
             const newRevealedCells = JSON.parse(JSON.stringify(currentRevealedCells))
             const currentCorrectedData = correctedCells[action.id] ?? []
@@ -171,7 +173,7 @@ export const sudokuReducer = (state = initialState, action: SudokuActions): Sudo
         case "SELECT_DROPDOWN_REVEAL_CELL": {
             const { selectedCellIndex, revealedCells, currentSudokuBoardData } = state
             if (selectedCellIndex !== undefined) {
-                const revealCellList = revealedCells[action.id] ?? []
+                const revealCellList = [...(revealedCells[action.id] ?? [])]
                 const currentRevealedCells = revealCellList.length === 0 ? currentSudokuBoardData : revealCellList
                 return {
                     ...state,
