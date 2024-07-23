@@ -1,4 +1,4 @@
-export const Icon: React.FunctionComponent<{
+export const NumberIcon: React.FunctionComponent<{
     value: number
 }> = ({
     value

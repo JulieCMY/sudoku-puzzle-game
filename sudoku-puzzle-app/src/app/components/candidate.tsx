@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { selectSudokuCandidate } from "../action/sudoku"
-import { Icon } from "./icon"
+import { NumberIcon } from "./number_icon"
 import { RootState } from "../models/state"
 import { getAllCandidateList } from "../logic/sudoku"
 import { arePropsEqual } from "../utils/props_comparer"
@@ -84,7 +84,7 @@ const CandidateComponent: React.FunctionComponent<CandidateProps> = (props) => {
                                             onCandidateButtonClick(sudokuId,cell)
                                         }}
                                     >
-                                        <Icon value={cell}/>
+                                        <NumberIcon value={cell}/>
                                     </div>
                                 )
                             )
