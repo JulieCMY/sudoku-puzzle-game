@@ -1,11 +1,9 @@
 import React from "react"
-import { useSelector, useDispatch, connect } from "react-redux"
+import { connect } from "react-redux"
 import { selectSudokuKeyboard, deleteSudokuInput, selectCandidateModeCheckbox, selectSudokuCandidate } from "../action/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
 import { text } from "../text/text"
-import { SudokuState } from "../models/sudoku"
 import { RootState } from "../models/state"
-import { arePropsEqual } from "../utils/props_comparer"
 
 const keyboardInput: number[] = Array.from({ length: 9 }, (_, i) => i + 1)
 

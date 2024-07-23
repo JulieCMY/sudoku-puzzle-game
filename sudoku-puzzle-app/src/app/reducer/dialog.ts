@@ -1,24 +1,18 @@
+import combineSectionReducers from "combine-section-reducers"
 import { DialogActions } from "../action/dialog"
 import { SudokuActions } from "../action/sudoku"
-import { DialogState } from "../models/dialog"
 
-const initialState: DialogState = {
-    isCompletePuzzleDialogOpen: false
-}
+export const dialog = combineSectionReducers({
+    isCompletePuzzleDialogOpen
+})
 
-export const dialog = (state = initialState, action: DialogActions | SudokuActions): DialogState => {
+function isCompletePuzzleDialogOpen(state: boolean = false, action: DialogActions | SudokuActions): boolean {
     switch (action.type) {
         case "SELECT_DROPDOWN_REVEAL_PUZZLE": {
-            return {
-                ...state,
-                isCompletePuzzleDialogOpen: true
-            }
+            return true
         }
         case "DISMISS_COMPLETE_PUZZLE_DIALOG": {
-            return {
-                ...state,
-                isCompletePuzzleDialogOpen: false
-            }
+            return false
         }
         default:
             return state
