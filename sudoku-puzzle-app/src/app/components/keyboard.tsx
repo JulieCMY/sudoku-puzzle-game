@@ -6,7 +6,7 @@ import { RootState } from "../models/state"
 import { SwitchToggle } from "./switch_toggle"
 import { Language } from "../models/config"
 import { getTextByLanguage } from "../logic/language"
-import { checkIsCellPrefilled, getSudokuRowColIndex } from "../logic/sudoku"
+import { checkIsCellPrefilled, checkIsKeyNumberCompleted, getSudokuRowColIndex, processSudokuPlayerData } from "../logic/sudoku"
 import { NumberIcon } from "./number_icon"
 
 const keyboardInput: number[] = Array.from({ length: 9 }, (_, i) => i + 1)
@@ -17,6 +17,7 @@ enum KeyboardMode {
 }
 
 interface StateProps {
+    playerData: number[][]
     isAutoCandidateModeOn: boolean
     isShowHighlightedCellOn: boolean
     selectedCellIndex?: number
@@ -34,8 +35,11 @@ interface DispatchProps {
 interface KeyboardProps extends StateProps, DispatchProps {}
 
 function mapStateToProps(state: RootState): StateProps {
+    const { sudokuId, sudokuData} = sudokuBoardData[0]
     const { 
         sudoku: {
+            playerStats,
+            revealedCells,
             isAutoCandidateModeOn,
             isShowHighlightedCellOn,
             selectedCellIndex
@@ -44,7 +48,11 @@ function mapStateToProps(state: RootState): StateProps {
             language
         }
     } = state
+    const currentSudokuPlayerStats = playerStats[sudokuId] ?? {}
+    const currectRevealedData = revealedCells[sudokuId] ?? []
+    const playerData = processSudokuPlayerData(sudokuData, currentSudokuPlayerStats, currectRevealedData)
     return {
+        playerData,
         isAutoCandidateModeOn,
         isShowHighlightedCellOn,
         selectedCellIndex,
@@ -54,6 +62,7 @@ function mapStateToProps(state: RootState): StateProps {
 
 const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
     const {
+        playerData,
         isAutoCandidateModeOn,
         isShowHighlightedCellOn,
         selectedCellIndex,
@@ -76,12 +85,15 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
     const onModeButtonClick = (mode: KeyboardMode): void => {
         setKeyboardMode(mode)
     }
-    const onNumericButtonClick = (id: number, value: number): void => {
-        if (!isSelectedCellPrefilled) {
+    const checkIsKeyNumberDisabled = (keyValue: number): boolean => {
+        return isSelectedCellPrefilled || checkIsKeyNumberCompleted(keyValue, playerData)
+    }
+    const onNumericButtonClick = (id: number, keyValue: number): void => {
+        if (!checkIsKeyNumberDisabled(keyValue)) {
             if (keyboardMode===KeyboardMode.NORMAL) {
-                selectSudokuKeyboard(id, value)
+                selectSudokuKeyboard(id, keyValue)
             } else {
-                selectSudokuCandidate(id, value)
+                selectSudokuCandidate(id, keyValue)
             }
         }
     }
@@ -108,8 +120,8 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
                             >
                                 <NumberIcon 
                                     value={cell} 
-                                    isBold={!isSelectedCellPrefilled}
-                                    fillColour={isSelectedCellPrefilled ? "#959595" : undefined}
+                                    isBold={!checkIsKeyNumberDisabled(cell)}
+                                    fillColour={checkIsKeyNumberDisabled(cell) ? "#959595" : undefined}
                                 />
                             </div>
                         </div>

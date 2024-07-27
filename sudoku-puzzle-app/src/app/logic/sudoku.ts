@@ -261,3 +261,15 @@ export const checkIsCellSameValue = (rowIndex: number, colIndex: number, playerD
     return !!selectedCellValue && playerData[rowIndex][colIndex] === selectedCellValue
 
 }
+
+export const checkIsKeyNumberCompleted = (keyValue: number, playerData: number[][]): boolean => {
+    let count = 0
+    playerData.map((rowData: number[], rowIndex: number) => {
+        rowData.map((_cellValue: number, colIndex: number) => {
+            if (playerData[rowIndex][colIndex] === keyValue) {
+                count++
+            }
+        })
+    })
+    return count === 9
+}
