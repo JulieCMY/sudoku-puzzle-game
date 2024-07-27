@@ -3,9 +3,12 @@ import { connect } from "react-redux"
 import { Dialog } from "./dialog"
 import { dismissCompletePuzzleDialog } from "../action/dialog"
 import { RootState } from "../models/state"
+import { Language } from "../models/config"
+import { getTextByLanguage } from "../logic/language"
 
 interface StateProps {
     isCompletePuzzleDialogOpen: boolean
+    language: Language
 }
 
 interface DispatchProps {
@@ -16,16 +19,23 @@ interface DialogProps extends StateProps, DispatchProps {}
 
 function mapStateToProps(state: RootState): StateProps {
     const { 
-        isCompletePuzzleDialogOpen
-    } = state.dialog
+        dialog: {
+            isCompletePuzzleDialogOpen
+        },
+        config: {
+            language
+        }
+    } = state
     return {
-        isCompletePuzzleDialogOpen
+        isCompletePuzzleDialogOpen,
+        language
     }
 }
 
 const DialogCompletePuzzleComponent: React.FunctionComponent<DialogProps> = (props) => {
-    const { isCompletePuzzleDialogOpen, dismissCompletePuzzleDialog } = props
+    const { isCompletePuzzleDialogOpen, language, dismissCompletePuzzleDialog } = props
     const audioRef = React.useRef<HTMLAudioElement>(null)
+    const text = getTextByLanguage(language)
 
     React.useEffect(() => {
         if (isCompletePuzzleDialogOpen) {
@@ -42,8 +52,8 @@ const DialogCompletePuzzleComponent: React.FunctionComponent<DialogProps> = (pro
             onCloseButtonClick={dismissCompletePuzzleDialog}
         >
             <i className="su-modal-star" />
-            <h1 className="modal-system-header">Congrats!</h1>
-            <p className="modal-system-subheader">You finished a <span className="highlight">medium</span> puzzle in 7:49.</p>
+            <h1 className="modal-system-header">{text.completePuzzleDialog.title}</h1>
+            <p className="modal-system-subheader">{text.completePuzzleDialog.body1}<span className="highlight">medium</span>{text.completePuzzleDialog.body2}7:49{text.completePuzzleDialog.body3}</p>
             <audio ref={audioRef}>
                 <source src="https://static01.nyt.com/packages/other/crossword/puzzle-media/shared/San_Jose_Strut.mp3" type="audio/mpeg" />
             </audio>
