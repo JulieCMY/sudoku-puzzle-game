@@ -5,6 +5,7 @@ import { SudokuState } from "../models/sudoku"
 import { checkIsCellHighlighted, checkIsCellPrefilled, checkIsCellSameValue, checkIsCellSelected, getSudokuCellIndex } from "../logic/sudoku"
 import { RootState } from "../models/state"
 import { arePropsEqual } from "../utils/props_comparer"
+import { NumberIcon } from "./number_icon"
 
 interface StateProps {
     selectedCellIndex: number | undefined
@@ -73,6 +74,11 @@ const CellComponent: React.FunctionComponent<CellProps> = (props) => {
         onPress(rowIndex, colIndex)
     }
 
+    let numberIconFillColour: string = "black"
+    if (isCellRevealed && !isCellPrefilled) {
+        numberIconFillColour = "#0369A1"
+    }
+
     return (
         <div 
             key={colIndex}
@@ -82,7 +88,9 @@ const CellComponent: React.FunctionComponent<CellProps> = (props) => {
             {
                 !shouldShowCandidate ? (
                     <div key={colIndex} className="numeric" style={{position: "relative"}}>
-                        <div className={`keyboard-svg key-${value} ${isCellRevealed && !isCellPrefilled && "key-reveal-puzzle"}`} />
+                        <div className={"keyboard-svg"}>
+                            <NumberIcon value={value} isBold={true} fillColour={numberIconFillColour} />
+                        </div>
                         { isCellCorrected && <div className="cell-correction" /> }
                         <div className={`cell-conflict ${isCellConflict? "conflicted": ""}`}/>
                     </div>

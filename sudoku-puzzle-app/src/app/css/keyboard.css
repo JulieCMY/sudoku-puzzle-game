@@ -60,68 +60,11 @@
     bottom: 0;
     right: 0;
     margin: auto;
-}
-
-.key-reveal-puzzle {
-    filter: invert(47%) sepia(83%) saturate(7486%) hue-rotate(193deg) brightness(106%) contrast(120%);
+    display: flex;
 }
 
 .key-disabled {
-    filter: brightness(0) saturate(100%) invert(68%) sepia(8%) saturate(397%) hue-rotate(179deg) brightness(94%) contrast(92%);
-}
-
-.key-1 {
-    background-repeat: no-repeat;
-    background-image: url(../images/1.svg);
-    background-position: center;
-}
-
-.key-2 {
-    background-repeat: no-repeat;
-    background-image: url(../images/2.svg);
-    background-position: center;
-}
-
-.key-3 {
-    background-repeat: no-repeat;
-    background-image: url(../images/3.svg);
-    background-position: center;
-}
-
-.key-4 {
-    background-repeat: no-repeat;
-    background-image: url(../images/4.svg);
-    background-position: center;
-}
-
-.key-5 {
-    background-repeat: no-repeat;
-    background-image: url(../images/5.svg);
-    background-position: center;
-}
-
-.key-6 {
-    background-repeat: no-repeat;
-    background-image: url(../images/6.svg);
-    background-position: center;
-}
-
-.key-7 {
-    background-repeat: no-repeat;
-    background-image: url(../images/7.svg);
-    background-position: center;
-}
-
-.key-8 {
-    background-repeat: no-repeat;
-    background-image: url(../images/8.svg);
-    background-position: center;
-}
-
-.key-9 {
-    background-repeat: no-repeat;
-    background-image: url(../images/9.svg);
-    background-position: center;
+    filter: brightness(0) saturate(100%) invert(72%) sepia(0%) saturate(247%) hue-rotate(219deg) brightness(85%) contrast(74%);
 }
 
 .key-delete {

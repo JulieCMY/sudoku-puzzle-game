@@ -7,6 +7,7 @@ import { SwitchToggle } from "./switch_toggle"
 import { Language } from "../models/config"
 import { getTextByLanguage } from "../logic/language"
 import { checkIsCellPrefilled, getSudokuRowColIndex } from "../logic/sudoku"
+import { NumberIcon } from "./number_icon"
 
 const keyboardInput: number[] = Array.from({ length: 9 }, (_, i) => i + 1)
 
@@ -103,8 +104,14 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
                             onClick={(): void => {onNumericButtonClick(sudokuId, cell)}} 
                         >
                             <div 
-                                className={`keyboard-svg key-${cell} ${isSelectedCellPrefilled && "key-disabled"} ${keyboardMode===KeyboardMode.CANDIDATE && `key-candidate key-candidate-${cell}`}`} 
-                            />
+                                className={`keyboard-svg ${keyboardMode===KeyboardMode.CANDIDATE && `key-candidate key-candidate-${cell}`}`} 
+                            >
+                                <NumberIcon 
+                                    value={cell} 
+                                    isBold={!isSelectedCellPrefilled}
+                                    fillColour={isSelectedCellPrefilled ? "#959595" : undefined}
+                                />
+                            </div>
                         </div>
                     ))}
                     <div 
