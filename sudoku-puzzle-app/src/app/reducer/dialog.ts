@@ -11,6 +11,9 @@ function isCompletePuzzleDialogOpen(state: boolean = false, action: DialogAction
         case "SELECT_DROPDOWN_REVEAL_PUZZLE": {
             return true
         }
+        case "USER_COMPLETE_SUDOKU_PUZZLE": {
+            return true
+        }
         case "DISMISS_COMPLETE_PUZZLE_DIALOG": {
             return false
         }

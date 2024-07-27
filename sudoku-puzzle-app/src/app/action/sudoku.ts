@@ -10,6 +10,7 @@ export type SudokuActions =
     | ReturnType<typeof selectDropdownRevealCell>
     | ReturnType<typeof selectDropdownRevealPuzzle>
     | ReturnType<typeof selectDropdownResetPuzzle>
+    | ReturnType<typeof userCompleteSudokuPuzzle>
 
 export const selectSudokuCell = (index: number) => {
     return {
@@ -84,6 +85,13 @@ export const selectDropdownRevealPuzzle = (id: number) => {
 export const selectDropdownResetPuzzle = (id: number) => {
     return {
         type: "SELECT_DROPDOWN_RESET_PUZZLE",
+        id
+    } as const
+}
+
+export const userCompleteSudokuPuzzle = (id: number) => {
+    return {
+        type: "USER_COMPLETE_SUDOKU_PUZZLE",
         id
     } as const
 }

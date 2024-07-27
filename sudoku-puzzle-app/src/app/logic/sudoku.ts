@@ -273,3 +273,12 @@ export const checkIsKeyNumberCompleted = (keyValue: number, playerData: number[]
     })
     return count === 9
 }
+
+export const checkIsSudokuPuzzleCompleted = (board: number[][], playerData: number[][]): boolean => {
+    const solvedSudoku = solveSudoku(board)
+    return solvedSudoku.every((rowData: number[], rowIndex: number) => {
+        return rowData.every((cellValue: number, colIndex: number) => {
+            return cellValue === playerData[rowIndex][colIndex]
+        })
+    })
+}

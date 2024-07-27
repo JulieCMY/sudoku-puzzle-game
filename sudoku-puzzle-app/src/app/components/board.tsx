@@ -1,8 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
-import { selectSudokuCell } from "../action/sudoku"
+import { selectSudokuCell, userCompleteSudokuPuzzle } from "../action/sudoku"
 import { Cell } from "./cell"
-import { findDuplicateCellIndex, getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
+import { checkIsSudokuPuzzleCompleted, findDuplicateCellIndex, getSudokuCellIndex, processSudokuPlayerData } from "../logic/sudoku"
 import { ObjectCollection } from "../models/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
 import { RootState } from "../models/state"
@@ -12,6 +12,7 @@ interface StateProps {
     sudokuData: number[][]
     selectedCellIndex: number | undefined
     shouldRevealPuzzle: boolean
+    isSudokuPuzzleCompleted: boolean
     revealedCells: ObjectCollection<number[][]>
     playerData: number[][]
     currentCorrectedCells: number[]
@@ -20,6 +21,7 @@ interface StateProps {
 
 interface DispatchProps {
     selectSudokuCell: typeof selectSudokuCell
+    userCompleteSudokuPuzzle: typeof userCompleteSudokuPuzzle
 }
 
 interface BoardProps extends StateProps, DispatchProps {}
@@ -38,11 +40,13 @@ function mapStateToProps(state: RootState): StateProps {
     const currentCorrectedCells = correctedCells[sudokuId] ?? []
     const playerData = processSudokuPlayerData(sudokuData, currentSudokuPlayerStats, currectRevealedData)
     const duplicatedCellIndexList = findDuplicateCellIndex(playerData)
+    const isSudokuPuzzleCompleted = checkIsSudokuPuzzleCompleted(sudokuData, playerData)
     return {
         sudokuId,
         sudokuData,
         selectedCellIndex,
         shouldRevealPuzzle,
+        isSudokuPuzzleCompleted,
         revealedCells,
         playerData,
         currentCorrectedCells,
@@ -56,12 +60,20 @@ const BoardComponent: React.FunctionComponent<BoardProps> = (props) => {
         sudokuData,
         selectedCellIndex,
         shouldRevealPuzzle,
+        isSudokuPuzzleCompleted,
         revealedCells,
         playerData,
         currentCorrectedCells,
         duplicatedCellIndexList,
-        selectSudokuCell
+        selectSudokuCell,
+        userCompleteSudokuPuzzle
     } = props
+
+    React.useEffect(() => {
+        if (isSudokuPuzzleCompleted) {
+            userCompleteSudokuPuzzle(sudokuId)
+        } 
+    }, [isSudokuPuzzleCompleted, sudokuId, userCompleteSudokuPuzzle])
 
     const onCellClick = (rowIndex: number, colIndex: number): void => {
         const selectedIndex = getSudokuCellIndex(rowIndex, colIndex)
@@ -106,7 +118,8 @@ const BoardComponent: React.FunctionComponent<BoardProps> = (props) => {
 }
 
 const dispatchActions = {
-    selectSudokuCell
+    selectSudokuCell,
+    userCompleteSudokuPuzzle
 }
 
 export const Board = connect<StateProps, DispatchProps, {}, RootState>(
