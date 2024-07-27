@@ -1,21 +1,55 @@
 import React from "react"
 import { useOutsideClick } from "../utils/common"
-import { useDispatch, useSelector } from "react-redux"
+import { connect } from "react-redux"
 import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle, selectDropdownRevealCell, selectDropdownCheckCell, selectDropdownCheckPuzzle } from "../action/sudoku"
-import { SudokuState } from "../models/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
-import { text } from "../text/text"
+import { RootState } from "../models/state"
+import { Language } from "../models/config"
+import { getTextByLanguage } from "../logic/language"
 
-export const ToolBar: React.FunctionComponent = () => {
-    const dispatch = useDispatch()
+interface StateProps {
+    shouldRevealPuzzle: boolean
+    language: Language
+}
+
+interface DispatchProps {
+    selectDropdownCheckCell: typeof selectDropdownCheckCell
+    selectDropdownCheckPuzzle: typeof selectDropdownCheckPuzzle
+    selectDropdownRevealCell: typeof selectDropdownRevealCell
+    selectDropdownRevealPuzzle: typeof selectDropdownRevealPuzzle
+    selectDropdownResetPuzzle: typeof selectDropdownResetPuzzle
+}
+
+interface ToolBardProps extends StateProps, DispatchProps {}
+
+function mapStateToProps(state: RootState): StateProps {
+    const { 
+        sudoku: {
+            shouldRevealPuzzle
+        },
+        config: {
+            language
+        }
+    } = state
+    return {
+        shouldRevealPuzzle,
+        language
+    }
+}
+
+const ToolBarComponent: React.FunctionComponent<ToolBardProps> = (props) => {
+    const {
+        shouldRevealPuzzle,
+        language 
+    } = props
+    const text = getTextByLanguage(language)
     const { sudokuId } = sudokuBoardData[0]
-    const shouldRevealPuzzle = useSelector((state: SudokuState) => state.shouldRevealPuzzle)
     const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false)
 
     const dropdown = shouldRevealPuzzle ? [
         {
             text: text.resetPuzzle,
-            onClick: (): void => { dispatch(selectDropdownResetPuzzle(sudokuId)) }
+            onClick: (): void => { selectDropdownResetPuzzle(sudokuId) }
         }
     ] :[
         {
@@ -24,23 +58,23 @@ export const ToolBar: React.FunctionComponent = () => {
         },
         {
             text: text.checkCell,
-            onClick: (): void => { dispatch(selectDropdownCheckCell(sudokuId)) }
+            onClick: (): void => { selectDropdownCheckCell(sudokuId) }
         },
         {
             text: text.checkPuzzle,
-            onClick: (): void => { dispatch(selectDropdownCheckPuzzle(sudokuId)) }
+            onClick: (): void => { selectDropdownCheckPuzzle(sudokuId) }
         },
         {
             text: text.revealCell,
-            onClick: (): void => { dispatch(selectDropdownRevealCell(sudokuId)) }
+            onClick: (): void => { selectDropdownRevealCell(sudokuId) }
         },
         {
             text: text.revealPuzzle,
-            onClick: (): void => { dispatch(selectDropdownRevealPuzzle(sudokuId)) }
+            onClick: (): void => { selectDropdownRevealPuzzle(sudokuId) }
         },
         {
             text: text.resetPuzzle,
-            onClick: (): void => { dispatch(selectDropdownResetPuzzle(sudokuId)) }
+            onClick: (): void => { selectDropdownResetPuzzle(sudokuId) }
         }
     ]
 
@@ -97,3 +131,16 @@ export const ToolBar: React.FunctionComponent = () => {
         </div>
     )
 }
+
+const dispatchActions = {
+    selectDropdownCheckCell,
+    selectDropdownCheckPuzzle,
+    selectDropdownRevealCell,
+    selectDropdownRevealPuzzle,
+    selectDropdownResetPuzzle
+}
+
+export const ToolBar = connect<StateProps, DispatchProps, {}, RootState>(
+    mapStateToProps,
+    dispatchActions
+)(ToolBarComponent)

@@ -2,9 +2,10 @@ import React from "react"
 import { connect } from "react-redux"
 import { selectSudokuKeyboard, deleteSudokuInput, selectCandidateModeCheckbox, selectSudokuCandidate } from "../action/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
-import { text } from "../text/text"
 import { RootState } from "../models/state"
 import { SwitchToggle } from "./switch_toggle"
+import { Language } from "../models/config"
+import { getTextByLanguage } from "../logic/language"
 
 const keyboardInput: number[] = Array.from({ length: 9 }, (_, i) => i + 1)
 
@@ -15,6 +16,7 @@ enum KeyboardMode {
 
 interface StateProps {
     isAutoCandidateModeOn: boolean
+    language: Language
 }
 
 interface DispatchProps {
@@ -28,21 +30,29 @@ interface KeyboardProps extends StateProps, DispatchProps {}
 
 function mapStateToProps(state: RootState): StateProps {
     const { 
-        isAutoCandidateModeOn
-    } = state.sudoku
+        sudoku: {
+            isAutoCandidateModeOn
+        },
+        config: {
+            language
+        }
+    } = state
     return {
-        isAutoCandidateModeOn
+        isAutoCandidateModeOn,
+        language
     }
 }
 
 const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
     const {
         isAutoCandidateModeOn,
+        language,
         selectSudokuKeyboard,
         selectSudokuCandidate,
         deleteSudokuInput,
         selectCandidateModeCheckbox
     } = props
+    const text = getTextByLanguage(language)
     const { sudokuId } = sudokuBoardData[0]
     const [ keyboardMode, setKeyboardMode ] = React.useState<KeyboardMode>(KeyboardMode.NORMAL)
 
