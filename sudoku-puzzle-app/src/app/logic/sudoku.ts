@@ -232,3 +232,32 @@ export const checkIsCorrectPlacement = (board: number[][], cellValue: number, ce
     const solvedSudoku = solveSudoku(board)
     return cellValue === solvedSudoku[rowIndex][colIndex]
 }
+
+export const checkIsCellPrefilled = (rowIndex: number, colIndex: number, sudokuData: number[][]): boolean => {
+    return !!sudokuData[rowIndex][colIndex]
+}
+
+export const checkIsCellSelected = (rowIndex: number, colIndex: number, selectedCellIndex?: number): boolean => {
+    return selectedCellIndex === getSudokuCellIndex(rowIndex, colIndex)
+}
+
+export const checkIsCellHighlighted = (rowIndex: number, colIndex: number, selectedCellIndex?: number): boolean => {
+    if (selectedCellIndex === undefined || checkIsCellSelected(rowIndex, colIndex, selectedCellIndex)) {
+        return false
+    }
+    const { rowIndex: rIndex, colIndex: cIndex } = getSudokuRowColIndex(selectedCellIndex)
+    const isInSameRow = rowIndex === rIndex
+    const isInSameColumn = colIndex === cIndex
+    const isInSameSubGrid = Math.floor(rowIndex / 3) * 3 === Math.floor(rIndex / 3) * 3 && Math.floor(colIndex / 3) * 3 === Math.floor(cIndex / 3) * 3
+    return isInSameRow || isInSameColumn || isInSameSubGrid
+}
+
+export const checkIsCellSameValue = (rowIndex: number, colIndex: number, playerData: number[][], selectedCellIndex?: number): boolean => {
+    if (selectedCellIndex === undefined) {
+        return false
+    }
+    const { rowIndex: rIndex, colIndex: cIndex } = getSudokuRowColIndex(selectedCellIndex)
+    const selectedCellValue = playerData[rIndex][cIndex]
+    return !!selectedCellValue && playerData[rowIndex][colIndex] === selectedCellValue
+
+}

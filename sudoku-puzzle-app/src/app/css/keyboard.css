@@ -66,6 +66,10 @@
     filter: invert(47%) sepia(83%) saturate(7486%) hue-rotate(193deg) brightness(106%) contrast(120%);
 }
 
+.key-disabled {
+    filter: brightness(0) saturate(100%) invert(68%) sepia(8%) saturate(397%) hue-rotate(179deg) brightness(94%) contrast(92%);
+}
+
 .key-1 {
     background-repeat: no-repeat;
     background-image: url(../images/1.svg);

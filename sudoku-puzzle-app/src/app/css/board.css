@@ -61,8 +61,16 @@
 }
 
 .selected {
-    background: #ffda00;
+    background: #BAE6FD;
     cursor: pointer;
+}
+
+.highlighted {
+  background: #F0F9FF;
+}
+
+.sameValueHighlighted {
+  background: #E0F2FE;
 }
 
 .cell-item {

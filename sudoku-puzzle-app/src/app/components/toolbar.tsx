@@ -40,7 +40,12 @@ function mapStateToProps(state: RootState): StateProps {
 const ToolBarComponent: React.FunctionComponent<ToolBardProps> = (props) => {
     const {
         shouldRevealPuzzle,
-        language 
+        language,
+        selectDropdownCheckCell,
+        selectDropdownCheckPuzzle,
+        selectDropdownRevealCell,
+        selectDropdownRevealPuzzle,
+        selectDropdownResetPuzzle
     } = props
     const text = getTextByLanguage(language)
     const { sudokuId } = sudokuBoardData[0]

@@ -2,7 +2,7 @@ import React from "react"
 import { connect, useSelector } from "react-redux"
 import { Candidate } from "./candidate"
 import { SudokuState } from "../models/sudoku"
-import { getSudokuCellIndex } from "../logic/sudoku"
+import { checkIsCellHighlighted, checkIsCellPrefilled, checkIsCellSameValue, checkIsCellSelected, getSudokuCellIndex } from "../logic/sudoku"
 import { RootState } from "../models/state"
 import { arePropsEqual } from "../utils/props_comparer"
 
@@ -56,22 +56,24 @@ const CellComponent: React.FunctionComponent<CellProps> = (props) => {
         isCellCorrected,
         onPress
     } = props
-    const initialCellValue = sudokuData[rowIndex][colIndex]
-    const isCellPrefilled = !!initialCellValue
-    const isCellSelected = selectedCellIndex === getSudokuCellIndex(rowIndex, colIndex)
+
+    const isCellPrefilled = checkIsCellPrefilled(rowIndex, colIndex, sudokuData)
+    const isCellHighlighted = checkIsCellHighlighted(rowIndex, colIndex, selectedCellIndex)
+    const isCellSelected = checkIsCellSelected(rowIndex, colIndex, selectedCellIndex)
+    const isCellSameValue = checkIsCellSameValue(rowIndex, colIndex, playerData, selectedCellIndex)
     const shouldShowBottomBorder = ((rowIndex + 1) % 3 === 0 && rowIndex !== 8)
     const shouldShowRightBorder = ((colIndex + 1) % 3 === 0 && colIndex !== 8)
     const shouldShowCandidate = isAutoCandidateModeOn ? !isCellPrefilled && !value : !value
+    
     const onCellClick = () => {
-        if (!isCellPrefilled) {
-            onPress(rowIndex, colIndex)
-        }
+        onPress(rowIndex, colIndex)
     }
+
     return (
         <div 
             key={colIndex}
             onClick={onCellClick}
-            className={`cell-container ${isCellPrefilled ? "prefilled" : ""} ${isCellSelected ? "selected" : ""} ${shouldShowBottomBorder ? "cell-container-bottom-border" :""} ${shouldShowRightBorder? "cell-container-right-border" : ""}`}
+            className={`cell-container ${isCellPrefilled && "prefilled"} ${isCellHighlighted && "highlighted"} ${isCellSameValue && "sameValueHighlighted"} ${isCellSelected && "selected"} ${shouldShowBottomBorder && "cell-container-bottom-border"} ${shouldShowRightBorder&& "cell-container-right-border"}`}
         >
             {
                 !shouldShowCandidate ? (

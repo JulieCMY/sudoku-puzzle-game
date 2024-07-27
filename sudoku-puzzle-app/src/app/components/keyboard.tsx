@@ -6,6 +6,7 @@ import { RootState } from "../models/state"
 import { SwitchToggle } from "./switch_toggle"
 import { Language } from "../models/config"
 import { getTextByLanguage } from "../logic/language"
+import { checkIsCellPrefilled, getSudokuRowColIndex } from "../logic/sudoku"
 
 const keyboardInput: number[] = Array.from({ length: 9 }, (_, i) => i + 1)
 
@@ -16,6 +17,7 @@ enum KeyboardMode {
 
 interface StateProps {
     isAutoCandidateModeOn: boolean
+    selectedCellIndex?: number
     language: Language
 }
 
@@ -31,7 +33,8 @@ interface KeyboardProps extends StateProps, DispatchProps {}
 function mapStateToProps(state: RootState): StateProps {
     const { 
         sudoku: {
-            isAutoCandidateModeOn
+            isAutoCandidateModeOn,
+            selectedCellIndex
         },
         config: {
             language
@@ -39,6 +42,7 @@ function mapStateToProps(state: RootState): StateProps {
     } = state
     return {
         isAutoCandidateModeOn,
+        selectedCellIndex,
         language
     }
 }
@@ -46,6 +50,7 @@ function mapStateToProps(state: RootState): StateProps {
 const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
     const {
         isAutoCandidateModeOn,
+        selectedCellIndex,
         language,
         selectSudokuKeyboard,
         selectSudokuCandidate,
@@ -53,17 +58,24 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
         selectCandidateModeCheckbox
     } = props
     const text = getTextByLanguage(language)
-    const { sudokuId } = sudokuBoardData[0]
+    const { sudokuId, sudokuData } = sudokuBoardData[0]
     const [ keyboardMode, setKeyboardMode ] = React.useState<KeyboardMode>(KeyboardMode.NORMAL)
+    let isSelectedCellPrefilled = false
+    if (selectedCellIndex !== undefined) {
+        const { rowIndex, colIndex } = getSudokuRowColIndex(selectedCellIndex)
+        isSelectedCellPrefilled = checkIsCellPrefilled(rowIndex, colIndex, sudokuData)
+    }
 
     const onModeButtonClick = (mode: KeyboardMode): void => {
         setKeyboardMode(mode)
     }
     const onNumericButtonClick = (id: number, value: number): void => {
-        if (keyboardMode===KeyboardMode.NORMAL) {
-            selectSudokuKeyboard(id, value)
-        } else {
-            selectSudokuCandidate(id, value)
+        if (!isSelectedCellPrefilled) {
+            if (keyboardMode===KeyboardMode.NORMAL) {
+                selectSudokuKeyboard(id, value)
+            } else {
+                selectSudokuCandidate(id, value)
+            }
         }
     }
     const onDeleteButtonClick = (id: number): void => {
@@ -91,7 +103,7 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
                             onClick={(): void => {onNumericButtonClick(sudokuId, cell)}} 
                         >
                             <div 
-                                className={`keyboard-svg key-${cell} ${keyboardMode===KeyboardMode.CANDIDATE && `key-candidate key-candidate-${cell}`}`} 
+                                className={`keyboard-svg key-${cell} ${isSelectedCellPrefilled && "key-disabled"} ${keyboardMode===KeyboardMode.CANDIDATE && `key-candidate key-candidate-${cell}`}`} 
                             />
                         </div>
                     ))}
@@ -100,7 +112,7 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
                         className="button numeric key-delete-container" 
                         onClick={(): void => {onDeleteButtonClick(sudokuId)}}
                     >
-                        <div className={`keyboard-svg key-delete ${keyboardMode===KeyboardMode.CANDIDATE && "key-candidate-delete"}`} />
+                        <div className={`keyboard-svg ${isSelectedCellPrefilled && "key-disabled"} key-delete ${keyboardMode===KeyboardMode.CANDIDATE && "key-candidate-delete"}`} />
                     </div>
                 </div>
                 <div className="keyboard-auto" onClick={onAutoCandidateModeCheckboxClick}>
