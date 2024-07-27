@@ -17,6 +17,7 @@ export interface SudokuState {
     revealedCells: ObjectCollection<number[][]>         // record revealed sudoku cells
     correctedCells: ObjectCollection<number[]>          // record checked sudoku cells
     isAutoCandidateModeOn: boolean
+    isShowHighlightedCellOn: boolean
     shouldRevealPuzzle: boolean
     currentSudokuBoardData: number[][]                  // TODO
 }

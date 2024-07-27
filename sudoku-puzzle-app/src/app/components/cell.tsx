@@ -9,6 +9,7 @@ import { arePropsEqual } from "../utils/props_comparer"
 interface StateProps {
     selectedCellIndex: number | undefined
     isAutoCandidateModeOn: boolean
+    isShowHighlightedCellOn: boolean
 }
 
 interface PassthroughProps {
@@ -33,11 +34,13 @@ interface CellProps extends StateProps, PassthroughProps {}
 function mapStateToProps(state: RootState): StateProps {
     const { 
         selectedCellIndex,
-        isAutoCandidateModeOn
+        isAutoCandidateModeOn,
+        isShowHighlightedCellOn,
     } = state.sudoku
     return {
         selectedCellIndex,
-        isAutoCandidateModeOn
+        isAutoCandidateModeOn,
+        isShowHighlightedCellOn
     }
 }
 
@@ -51,6 +54,7 @@ const CellComponent: React.FunctionComponent<CellProps> = (props) => {
         colIndex,
         selectedCellIndex,
         isAutoCandidateModeOn,
+        isShowHighlightedCellOn,
         isCellConflict,
         isCellRevealed,
         isCellCorrected,
@@ -58,9 +62,9 @@ const CellComponent: React.FunctionComponent<CellProps> = (props) => {
     } = props
 
     const isCellPrefilled = checkIsCellPrefilled(rowIndex, colIndex, sudokuData)
-    const isCellHighlighted = checkIsCellHighlighted(rowIndex, colIndex, selectedCellIndex)
+    const isCellHighlighted = checkIsCellHighlighted(rowIndex, colIndex, selectedCellIndex) && isShowHighlightedCellOn
     const isCellSelected = checkIsCellSelected(rowIndex, colIndex, selectedCellIndex)
-    const isCellSameValue = checkIsCellSameValue(rowIndex, colIndex, playerData, selectedCellIndex)
+    const isCellSameValue = checkIsCellSameValue(rowIndex, colIndex, playerData, selectedCellIndex) && isShowHighlightedCellOn
     const shouldShowBottomBorder = ((rowIndex + 1) % 3 === 0 && rowIndex !== 8)
     const shouldShowRightBorder = ((colIndex + 1) % 3 === 0 && colIndex !== 8)
     const shouldShowCandidate = isAutoCandidateModeOn ? !isCellPrefilled && !value : !value

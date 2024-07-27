@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { selectSudokuKeyboard, deleteSudokuInput, selectCandidateModeCheckbox, selectSudokuCandidate } from "../action/sudoku"
+import { selectSudokuKeyboard, deleteSudokuInput, selectCandidateModeCheckbox, selectSudokuCandidate, selectShowHighlightedCellCheckbox } from "../action/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
 import { RootState } from "../models/state"
 import { SwitchToggle } from "./switch_toggle"
@@ -17,6 +17,7 @@ enum KeyboardMode {
 
 interface StateProps {
     isAutoCandidateModeOn: boolean
+    isShowHighlightedCellOn: boolean
     selectedCellIndex?: number
     language: Language
 }
@@ -26,6 +27,7 @@ interface DispatchProps {
     selectSudokuCandidate: typeof selectSudokuCandidate
     deleteSudokuInput: typeof deleteSudokuInput
     selectCandidateModeCheckbox: typeof selectCandidateModeCheckbox
+    selectShowHighlightedCellCheckbox: typeof selectShowHighlightedCellCheckbox
 }
 
 interface KeyboardProps extends StateProps, DispatchProps {}
@@ -34,6 +36,7 @@ function mapStateToProps(state: RootState): StateProps {
     const { 
         sudoku: {
             isAutoCandidateModeOn,
+            isShowHighlightedCellOn,
             selectedCellIndex
         },
         config: {
@@ -42,6 +45,7 @@ function mapStateToProps(state: RootState): StateProps {
     } = state
     return {
         isAutoCandidateModeOn,
+        isShowHighlightedCellOn,
         selectedCellIndex,
         language
     }
@@ -50,12 +54,14 @@ function mapStateToProps(state: RootState): StateProps {
 const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
     const {
         isAutoCandidateModeOn,
+        isShowHighlightedCellOn,
         selectedCellIndex,
         language,
         selectSudokuKeyboard,
         selectSudokuCandidate,
         deleteSudokuInput,
-        selectCandidateModeCheckbox
+        selectCandidateModeCheckbox,
+        selectShowHighlightedCellCheckbox
     } = props
     const text = getTextByLanguage(language)
     const { sudokuId, sudokuData } = sudokuBoardData[0]
@@ -77,12 +83,6 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
                 selectSudokuCandidate(id, value)
             }
         }
-    }
-    const onDeleteButtonClick = (id: number): void => {
-        deleteSudokuInput(id)
-    }
-    const onAutoCandidateModeCheckboxClick = (): void => {
-        selectCandidateModeCheckbox()
     }
 
     return (
@@ -110,14 +110,18 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
                     <div 
                         key="delete" 
                         className="button numeric key-delete-container" 
-                        onClick={(): void => {onDeleteButtonClick(sudokuId)}}
+                        onClick={(): void => {deleteSudokuInput(sudokuId)}}
                     >
                         <div className={`keyboard-svg ${isSelectedCellPrefilled && "key-disabled"} key-delete ${keyboardMode===KeyboardMode.CANDIDATE && "key-candidate-delete"}`} />
                     </div>
                 </div>
-                <div className="keyboard-auto" onClick={onAutoCandidateModeCheckboxClick}>
+                <div className="keyboard-auto" onClick={selectCandidateModeCheckbox}>
                     <input type="checkbox" checked={isAutoCandidateModeOn} className="keyboard-checkbox" />
                     <div>{text.autoCandidateMode}</div>
+                </div>
+                <div className="keyboard-auto" onClick={selectShowHighlightedCellCheckbox}>
+                    <input type="checkbox" checked={isShowHighlightedCellOn} className="keyboard-checkbox" />
+                    <div>{text.showHighlightedCell}</div>
                 </div>
             </div>
         </>
@@ -128,7 +132,8 @@ const dispatchActions = {
     selectSudokuKeyboard,
     selectSudokuCandidate,
     deleteSudokuInput,
-    selectCandidateModeCheckbox
+    selectCandidateModeCheckbox,
+    selectShowHighlightedCellCheckbox
 }
 
 export const Keyboard = connect<StateProps, DispatchProps, {}, RootState>(

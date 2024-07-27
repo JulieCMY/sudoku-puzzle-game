@@ -10,6 +10,7 @@ const initialState: SudokuState = {
     revealedCells: {},
     correctedCells: {},
     isAutoCandidateModeOn: false,
+    isShowHighlightedCellOn: true,
     shouldRevealPuzzle: false,
     currentSudokuBoardData: sudokuBoardData[0].sudokuData
 }
@@ -105,6 +106,12 @@ export const sudoku = (state = initialState, action: SudokuActions): SudokuState
             return {
                 ...state,
                 isAutoCandidateModeOn: !state.isAutoCandidateModeOn
+            }
+        }
+        case "SELECT_SHOW_HIGHLIGHTED_CELL_CHECKBOX": {
+            return {
+                ...state,
+                isShowHighlightedCellOn: !state.isShowHighlightedCellOn
             }
         }
         case "SELECT_DROPDOWN_CHECK_CELL": {
