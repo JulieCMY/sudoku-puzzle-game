@@ -4,6 +4,7 @@ import { selectSudokuKeyboard, deleteSudokuInput, selectCandidateModeCheckbox, s
 import { sudokuBoardData } from "../data/sudokuData"
 import { text } from "../text/text"
 import { RootState } from "../models/state"
+import { SwitchToggle } from "./switch_toggle"
 
 const keyboardInput: number[] = Array.from({ length: 9 }, (_, i) => i + 1)
 
@@ -66,22 +67,12 @@ const KeyboardComponent: React.FunctionComponent<KeyboardProps> = (props) => {
         <>
             <div className="su-divider" />
             <div className="keyboard">
-                <div>
-                    <button 
-                        type="button"
-                        onClick={(): void => {onModeButtonClick(KeyboardMode.NORMAL)}}  
-                        className={`keyboard-mode normalMode ${keyboardMode===KeyboardMode.NORMAL && "keyboard-mode-selected"}`}
-                    >
-                        {text.normal}
-                    </button>
-                    <button 
-                        type="button"
-                        onClick={(): void => {onModeButtonClick(KeyboardMode.CANDIDATE)}} 
-                        className={`keyboard-mode candidateMode ${keyboardMode===KeyboardMode.CANDIDATE && "keyboard-mode-selected"}`}
-                    >
-                        {text.candidate}
-                    </button>
-                </div>
+                <SwitchToggle 
+                    selectedValue={keyboardMode}
+                    toggleValues={[KeyboardMode.NORMAL, KeyboardMode.CANDIDATE]}
+                    toggleTexts={[text.normal,text.candidate]}
+                    onClick={onModeButtonClick}
+                />
                 <div className="su-keyboard-container">
                     {keyboardInput.map((cell: number, index: number) => (
                         <div 

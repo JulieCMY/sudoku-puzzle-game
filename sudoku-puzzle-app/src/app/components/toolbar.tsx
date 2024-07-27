@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { selectDropdownRevealPuzzle, selectDropdownResetPuzzle, selectDropdownRevealCell, selectDropdownCheckCell, selectDropdownCheckPuzzle } from "../action/sudoku"
 import { SudokuState } from "../models/sudoku"
 import { sudokuBoardData } from "../data/sudokuData"
+import { text } from "../text/text"
 
 export const ToolBar: React.FunctionComponent = () => {
     const dispatch = useDispatch()
@@ -13,32 +14,32 @@ export const ToolBar: React.FunctionComponent = () => {
 
     const dropdown = shouldRevealPuzzle ? [
         {
-            text: "Reset Puzzle",
+            text: text.resetPuzzle,
             onClick: (): void => { dispatch(selectDropdownResetPuzzle(sudokuId)) }
         }
     ] :[
         {
-            text: "Hint",
+            text: text.hint,
             onClick: (): void => {}
         },
         {
-            text: "Check Cell",
+            text: text.checkCell,
             onClick: (): void => { dispatch(selectDropdownCheckCell(sudokuId)) }
         },
         {
-            text: "Check Puzzle",
+            text: text.checkPuzzle,
             onClick: (): void => { dispatch(selectDropdownCheckPuzzle(sudokuId)) }
         },
         {
-            text: "Reveal Cell",
+            text: text.revealCell,
             onClick: (): void => { dispatch(selectDropdownRevealCell(sudokuId)) }
         },
         {
-            text: "Reveal Puzzle",
+            text: text.revealPuzzle,
             onClick: (): void => { dispatch(selectDropdownRevealPuzzle(sudokuId)) }
         },
         {
-            text: "Reset Puzzle",
+            text: text.resetPuzzle,
             onClick: (): void => { dispatch(selectDropdownResetPuzzle(sudokuId)) }
         }
     ]
@@ -53,7 +54,7 @@ export const ToolBar: React.FunctionComponent = () => {
             <div className="su-toolbar-left">
                 <button className="back-container">
                     <i className="back-arrow"/>
-                    <span className="back-text">Back</span>
+                    <span className="back-text">{text.back}</span>
                 </button>
             </div>    
             <div className="su-toolbar-center">

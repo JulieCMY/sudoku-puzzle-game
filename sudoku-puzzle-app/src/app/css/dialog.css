@@ -120,10 +120,33 @@
     .modal-wrapper {
         align-items: center;
         z-index: 99;
+        height: 100%;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: center;
+        flex-wrap: nowrap;
+        position: absolute;
     }
 
     .modal-body {
-        padding: 32px;
+        display: flex;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 3px 12px -1px rgba(0, 0, 0, .3);
+        overflow-y: auto;
+        box-sizing: border-box;
+        outline: none;
+        padding: 24px;
+        pointer-events: visible;
+        position: relative;
+        min-height: 80%;
+        max-height: calc(100% - 32px);
+        width: 100%;
+        z-index: 102;
     }
 }
 
