@@ -1,10 +1,10 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Dialog } from "./dialog"
-import { dismissCompletePuzzleDialog } from "../action/dialog"
-import { RootState } from "../models/state"
-import { Language } from "../models/config"
-import { getTextByLanguage } from "../logic/language"
+import { dismissCompletePuzzleDialog } from "../../action/dialog"
+import { RootState } from "../../models/state"
+import { Language } from "../../models/config"
+import { getTextByLanguage } from "../../logic/language"
 
 interface StateProps {
     isCompletePuzzleDialogOpen: boolean

@@ -102,6 +102,13 @@
     font-weight: bold;
 }
 
+.bullet-list {
+    list-style: initial;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
 .animate-opening {
     animation: SlideIn 200ms;
 }

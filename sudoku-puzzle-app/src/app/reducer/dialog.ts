@@ -3,7 +3,8 @@ import { DialogActions } from "../action/dialog"
 import { SudokuActions } from "../action/sudoku"
 
 export const dialog = combineSectionReducers({
-    isCompletePuzzleDialogOpen
+    isCompletePuzzleDialogOpen,
+    isHowToPlayDialogOpen
 })
 
 function isCompletePuzzleDialogOpen(state: boolean = false, action: DialogActions | SudokuActions): boolean {
@@ -21,4 +22,17 @@ function isCompletePuzzleDialogOpen(state: boolean = false, action: DialogAction
             return state
     }
 
+}
+
+function isHowToPlayDialogOpen(state: boolean = false, action: DialogActions): boolean {
+    switch (action.type) {
+        case "SHOW_HOW_TO_PLAY_DIALOG": {
+            return true
+        }
+        case "DISMISS_HOW_TO_PLAY_DIALOG": {
+            return false
+        }
+        default:
+            return state
+    }
 }

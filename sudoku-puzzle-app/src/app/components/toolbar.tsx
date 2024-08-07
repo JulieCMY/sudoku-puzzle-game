@@ -6,6 +6,7 @@ import { sudokuBoardData } from "../data/sudokuData"
 import { RootState } from "../models/state"
 import { Language } from "../models/config"
 import { getTextByLanguage } from "../logic/language"
+import { showHowToPlayDialog } from "../action/dialog"
 
 interface StateProps {
     shouldRevealPuzzle: boolean
@@ -18,6 +19,7 @@ interface DispatchProps {
     selectDropdownRevealCell: typeof selectDropdownRevealCell
     selectDropdownRevealPuzzle: typeof selectDropdownRevealPuzzle
     selectDropdownResetPuzzle: typeof selectDropdownResetPuzzle
+    showHowToPlayDialog: typeof showHowToPlayDialog
 }
 
 interface ToolBardProps extends StateProps, DispatchProps {}
@@ -45,7 +47,8 @@ const ToolBarComponent: React.FunctionComponent<ToolBardProps> = (props) => {
         selectDropdownCheckPuzzle,
         selectDropdownRevealCell,
         selectDropdownRevealPuzzle,
-        selectDropdownResetPuzzle
+        selectDropdownResetPuzzle,
+        showHowToPlayDialog
     } = props
     const text = getTextByLanguage(language)
     const { sudokuId } = sudokuBoardData[0]
@@ -129,7 +132,7 @@ const ToolBarComponent: React.FunctionComponent<ToolBardProps> = (props) => {
                         )
                     }
                 </div>
-                <button className="pz-toolbar-button">
+                <button className="pz-toolbar-button" onClick={showHowToPlayDialog}>
                     <i className="su-app-help"/>
                 </button>
             </div>         
@@ -142,7 +145,8 @@ const dispatchActions = {
     selectDropdownCheckPuzzle,
     selectDropdownRevealCell,
     selectDropdownRevealPuzzle,
-    selectDropdownResetPuzzle
+    selectDropdownResetPuzzle,
+    showHowToPlayDialog
 }
 
 export const ToolBar = connect<StateProps, DispatchProps, {}, RootState>(

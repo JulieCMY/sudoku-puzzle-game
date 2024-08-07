@@ -2,13 +2,14 @@ import React from "react"
 import { ToolBar } from "./toolbar"
 import { Board } from "./board"
 import { Keyboard } from "./keyboard"
-import { DialogCompletePuzzle } from "./dialog_complete_puzzle"
+import { DialogCompletePuzzle } from "./dialog/dialog_complete_puzzle"
 import "../css/body.css"
 import "../css/board.css"
 import "../css/keyboard.css"
 import "../css/candidate.css"
 import "../css/dialog.css"
 import "../css/toolbar.css"
+import { DialogHowToPlay } from "./dialog/dialog_how_to_play"
 
 export const Sudoku: React.FunctionComponent = () => {
     return (
@@ -21,6 +22,7 @@ export const Sudoku: React.FunctionComponent = () => {
                 </div>        
             </div>
             <DialogCompletePuzzle />
+            <DialogHowToPlay />
         </div>
     )
 }
