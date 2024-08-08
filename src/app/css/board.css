@@ -102,3 +102,12 @@
   transform: translate(-50%, -50%) rotate(-45deg);
   background-color: #ff4b56;
 }
+
+@media (max-width: 500px) {
+  .cell-conflict {
+    width: 0.7rem;
+    height: 0.7rem;
+    bottom: 1rem;
+    right: 0.5rem;
+  }
+}
