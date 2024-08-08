@@ -2,7 +2,7 @@
 #
 # To get started with Next.js see: https://nextjs.org/docs/getting-started
 #
-name: Deploy Sudoku Pizzle App to Pages
+name: Deploy Sudoku Puzzle App to Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -35,12 +35,12 @@ jobs:
       - name: Detect package manager
         id: detect-package-manager
         run: |
-          if [ -f "${{ github.workspace }}/yarn.lock" ]; then
+          if [ -f "${{ github.workspace }}/sudoku-puzzle-app/yarn.lock" ]; then
             echo "manager=yarn" >> $GITHUB_OUTPUT
             echo "command=install" >> $GITHUB_OUTPUT
             echo "runner=yarn" >> $GITHUB_OUTPUT
             exit 0
-          elif [ -f "${{ github.workspace }}/package.json" ]; then
+          elif [ -f "${{ github.workspace }}/sudoku-puzzle-app/package.json" ]; then
             echo "manager=npm" >> $GITHUB_OUTPUT
             echo "command=ci" >> $GITHUB_OUTPUT
             echo "runner=npx --no-install" >> $GITHUB_OUTPUT
@@ -63,26 +63,29 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            .next/cache
+            sudoku-puzzle-app/.next/cache
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('sudoku-puzzle-app/**/package-lock.json', 'sudoku-puzzle-app/**/yarn.lock') }}-${{ hashFiles('sudoku-puzzle-app/**.[jt]s', 'sudoku-puzzle-app/**.[jt]sx') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('sudoku-puzzle-app/**/package-lock.json', 'sudoku-puzzle-app/**/yarn.lock') }}-
 
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-      
+        working-directory: sudoku-puzzle-app
+
       - name: Install react-redux
         run: npm install redux@5.0.1 react-redux@9.1.2 @reduxjs/toolkit@2.2.6 redux-devtools-extension@2.13.9 --legacy-peer-deps
+        working-directory: sudoku-puzzle-app
 
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        working-directory: sudoku-puzzle-app
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          path: sudoku-puzzle-app/out
 
   # Deployment job
   deploy:
